@@ -1,0 +1,15 @@
+{
+  "name": "mekanika-qo",
+  "version": "0.1.0",
+  "description": "Qo - Query object specification",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mekanika/qo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mekanika/qo/issues"
+  },
+  "license": "LGPL3+",
+  "homepage": "https://github.com/mekanika/qo",
+  "main": "index.js"
+}
