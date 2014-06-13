@@ -49,7 +49,7 @@ All examples in this document are shown as Javascript Objects. Serialising _Qo_ 
 
 Query objects comprise:
 
-  - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, etc
+  - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, `save`
   - **.resource** - _String_ : model `key` to query
   - **.content** - _Array_: Data to process
   - **.identifiers** - _Array_: `ids`
@@ -84,6 +84,17 @@ The `action` usually maps to the method that is invoked, but generally describes
 }
 ```
 
+The following are **standard** actions:
+
+- **create**: make new
+- **find**: locate. Similar to `read` (a very simple find).
+- **remove**: delete
+- **update**: partial save. Only passes fields that have changed.
+- **save**: idempotent save of entire data structure
+
+These actions should not be aliased or have their intended meaning altered.
+
+The action taxonomy may be extended arbitrarily to provide for alternate and varied functions.
 
 ###.resource
 
