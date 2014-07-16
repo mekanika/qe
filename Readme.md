@@ -64,6 +64,7 @@ Query objects comprise:
     - **.index** - _String_ to sort on
   - **.modifiers** - _Array_: specific updates
   - **.constraints** - _Array_: `where` style conditions
+  - **.meta** - _Object_ : arbitrary data hash
 
 
 ## Properties
@@ -315,6 +316,27 @@ Data payloads are usually Objects of arbitrary structure.
   ]
 }
 ```
+
+
+### .meta
+
+Type: **Object** of arbitrary data
+
+Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Think of it like a 'Header' block in an HTTP request.
+
+```js
+{
+  action: 'update',
+  resource: 'guitars',
+  identifiers: ['11523'],
+  content: [ {price:50} ],
+  meta: {
+    _authToken: 'xyzqwerty098'
+  }
+}
+```
+
+
 
 ## License
 
