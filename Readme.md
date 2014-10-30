@@ -150,8 +150,6 @@ Type: **Array** of strings
 
 Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.fields` are present, return all fields unless excluded by `.excludeFields`.
 
-**Special case**: If `.fields` is set to `null`, the request MUST return only `true` or `false` if it succeeds.
-
 ```js
 {
   action: 'find',
@@ -166,8 +164,6 @@ Selects the fields from the `.resource` **to return** with the result (rather th
 Type: **Array** of strings
 
 Similar to `.fields` except this lists fields to NOT return. Exclude fields have precedent if a field appears in both `.fields` and `.excludeFields`.
-
-Note: if `.fields` is set to `null`, only a boolean is returned.
 
 ```js
 {
