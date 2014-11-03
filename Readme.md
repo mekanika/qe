@@ -55,9 +55,8 @@ Query objects comprise:
   - **.identifiers** - _Array_: `ids`
   - **.fields** - _Array_: select `fields` to return
   - **.excludeFields** - _Array_: select `fields` to exclude
-  - **.display** - _Object_ how results return:
-      - **.limit** - _Number_ `default: 0`
-      - **.offset** - _Number_ `default: 0`
+  - **.limit** - _Number_: number of results to return
+  - **.offset** - _Number_ "start at" index value of results to return
   - **.order** - _Array_ contains `{}`:
     - **.direction** - ascending or descending
     - **.index** - _String_ to sort on
@@ -108,7 +107,7 @@ Some actions may not use a resource, most do.
 {
   resource: 'tweets',
   action: 'find',
-  display: { limit: 25 }
+  limit: 25
 }
 ```
 
@@ -202,17 +201,34 @@ Example:
 ```
 
 
-### .display
+### .limit
 
-Type: **Object**
+Type: **Number**
 
-Affect the returned number of results and their starting point.
+Maximum number of results to return.
 
-Assume **no** limit or offset if none present.
+Assume **no** limit if no present. Adapter may restrict results anyway.
 
-- **.limit** - _Number_ : How many results to return
 
-- **.offset** - _Number_ : Results to 'skip' (ie. start from `offset`)
+
+### .offset
+
+Type: **Number**
+
+Number of results to skip (ie. start from the `offset`)
+
+Assume **no** offset if none present.
+
+```js
+// For a set of possible records:
+['a','b','c']
+
+{offset:0}
+// -> ['a','b','c']
+
+{offset:1}
+// -> ['b','c']
+```
 
 
 
