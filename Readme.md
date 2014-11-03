@@ -31,6 +31,11 @@ to their balance, and return only their ids. */
 ```
 
 
+## Conventions
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
+
+
 ## Structure
 
 The only required parameter in a query is the `action`. As such the simplest _Qo_ would be:
@@ -43,7 +48,7 @@ All other parameters are optional and should be handled as such.
 
 ### Serialisation
 
-All examples in this document are shown as Javascript Objects. Serialising _Qo_ as JSON is acceptable.
+All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be serialised as JSON.
 
 ### Parameters
 
@@ -67,7 +72,7 @@ Query objects comprise:
 
 ### .action
 
-**Required** - An action MUST be provided.
+**Required** - An action **MUST** be provided.
 
 Type: **String**
 
@@ -77,7 +82,7 @@ The `action` usually maps to the method that is invoked, but generally describes
 {
   action: 'create',
   resource: 'tags',
-  data: [ {label:'sweet'} ]
+  body: [ {label:'sweet'} ]
 }
 ```
 
@@ -89,9 +94,9 @@ The following are **standard** actions:
 - **update**: partial save. Only passes fields that have changed.
 - **save**: idempotent save of entire data structure
 
-These actions should not be aliased or have their intended meaning altered.
+These actions **SHOULD NOT** be aliased or have their intended meaning altered.
 
-The action taxonomy may be extended arbitrarily to provide for alternate and varied functions.
+The action taxonomy **MAY** be extended arbitrarily to provide for alternate functions.
 
 
 ###.resource
@@ -100,7 +105,7 @@ Type: **String**
 
 A `resource` points to a unique entity type to act upon, like a table (SQL), a collection (Document stores), a resource (REST). It is almost always a unique reference to some end-point that an `action` will apply to.
 
-Some actions may not use a resource, most do.
+Some actions might _not_ use a resource, most do.
 
 ```js
 {
@@ -115,7 +120,7 @@ Some actions may not use a resource, most do.
 
 Type: **Array** of strings or numbers
 
-A simple array of entity IDs to which the `.action` should apply the `.data` or `.updates`. If `ids` are provided, the `.action` should **only** apply to those ids provided.
+A simple array of entity IDs to which the `.action` **SHOULD** apply the `.data` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
 
 ```js
 {
@@ -129,7 +134,7 @@ A simple array of entity IDs to which the `.action` should apply the `.data` or 
 
 Type: **Array** of strings
 
-Whitelist. Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.include` is present, return all fields unless excluded by `.exclude`.
+Whitelist. Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.include` is present, all fields **SHOULD** be returned unless excluded by `.exclude`.
 
 ```js
 {
@@ -144,7 +149,7 @@ Whitelist. Selects the fields from the `.resource` **to return** with the result
 
 Type: **Array** of strings
 
-Blacklist. List of fields NOT to return.
+Blacklist. List of fields that **SHOULD NOT** be returned.
 
 Where both exclude and include are present in a Qo, only `include` is honoured (ie. `exclude` is discarded and ignored).
 
@@ -164,7 +169,7 @@ Type: **Array** of update objects
 
 Update object format: `{ $type: $field [, value: $val ] }`
 
-Updates are explicit instructions that inform changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` should be `update`.
+Updates are explicit instructions that inform changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` **MUST** be `update`.
 
 Example:
 ```js
@@ -204,7 +209,7 @@ Type: **Number**
 
 Maximum number of results to return.
 
-Assume **no** limit if no present. Adapter may restrict results anyway.
+Assume **no** limit if no present. Adapter **MAY** restrict results anyway.
 
 
 
@@ -233,7 +238,7 @@ Assume **no** offset if none present.
 
 Type: **Array** of strings
 
-Ordering strings take the form: `"[-][$field]"` where the first character may optionally be a `"-"` to indicate reverse sorting, and the `"$field"` may be a text string to sort on.
+Ordering strings take the form: `"[-][$field]"` where the first character **MAY** optionally be a `"-"` to indicate reverse sorting, and the `"$field"` **MAY** be a text string to sort on.
 
 The empty string `""` indicates a default sort (usually an ascending list sorted by the default key, usually 'id'). A `"-"` string would indicate a descending list sorted on the default key.
 
@@ -247,7 +252,7 @@ As such, the following are valid:
 { sort: [ "country" ] }
 ```
 
-Sub sorting is provided by adding unique parameters to order against:
+Sub sorting is provided by adding parameters to order against. These parameters **SHOULD** be unique.
 
 ```js
 {
@@ -297,7 +302,7 @@ Type: **Array** of data payloads
 
 Data payloads are usually Objects of arbitrary structure.
 
-`.body` is **always** an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
+`.body` **MUST always** be an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
 
 ```js
 {
@@ -315,7 +320,7 @@ Data payloads are usually Objects of arbitrary structure.
 
 Type: **Object** of arbitrary data
 
-Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Think of it like a 'Header' block in an HTTP request.
+Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Think of it like a 'Header' block in an HTTP request. **MAY** contain arbitrary data.
 
 ```js
 {
