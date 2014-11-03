@@ -99,7 +99,7 @@ The action taxonomy may be extended arbitrarily to provide for alternate and var
 
 Type: **String**
 
-A `resource` points to an entity to act upon, like a table (SQL), a document (Document stores), a resource (REST). It is almost always a unique reference to some end-point that an `action` will apply to.
+A `resource` points to a unique entity type to act upon, like a table (SQL), a collection (Document stores), a resource (REST). It is almost always a unique reference to some end-point that an `action` will apply to.
 
 Some actions may not use a resource, most do.
 
