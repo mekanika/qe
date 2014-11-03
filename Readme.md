@@ -52,7 +52,7 @@ Query objects comprise:
   - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, `save`
   - **.resource** - _String_ : model `key` to query
   - **.content** - _Array_: Data to process
-  - **.identifiers** - _Array_: `ids`
+  - **.ids** - _Array_: `ids`
   - **.fields** - _Array_: select `fields` to return
   - **.excludeFields** - _Array_: select `fields` to exclude
   - **.limit** - _Number_: number of results to return
@@ -95,6 +95,7 @@ These actions should not be aliased or have their intended meaning altered.
 
 The action taxonomy may be extended arbitrarily to provide for alternate and varied functions.
 
+
 ###.resource
 
 Type: **String**
@@ -112,16 +113,16 @@ Some actions may not use a resource, most do.
 ```
 
 
-###.identifiers
+###.ids
 
 Type: **Array** of strings or numbers
 
-A simple array of entity IDs to which the `.action` should apply the `.data` or `.modifiers`. If `identifiers` are provided, the `.action` should **only** apply to those ids provided.
+A simple array of entity IDs to which the `.action` should apply the `.data` or `.modifiers`. If `ids` are provided, the `.action` should **only** apply to those ids provided.
 
 ```js
 {
   action: 'remove',
-  identifiers: ['554120', '841042']
+  ids: ['554120', '841042']
 }
 ```
 
@@ -169,7 +170,7 @@ Example:
 {
   action: 'update',
   resource: 'wine',
-  identifiers: ['4jn6014jmns058sa41'],
+  ids: ['4jn6014jmns058sa41'],
   modifiers: [
     {set:'age', value:21},
     {unset:'status'},
@@ -323,7 +324,7 @@ Meta data store acts as a catch-all for context specific meta information that m
 {
   action: 'update',
   resource: 'guitars',
-  identifiers: ['11523'],
+  ids: ['11523'],
   content: [ {price:50} ],
   meta: {
     _authToken: 'xyzqwerty098'
