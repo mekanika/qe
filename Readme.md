@@ -19,7 +19,7 @@ An example _Qo_:
     {set: 'status', value: 'platinum'},
     {inc: 'credits', value: 25}
   ],
-  constraints: [
+  match: [
     {field:'followers', operator:'gte', condition:100},
     {field:'state', operator:'nin', condition:['CA']}
   ],
@@ -56,12 +56,12 @@ Query objects comprise:
   - **.include** - _Array_: whitelist fields to return
   - **.exclude** - _Array_: blacklist fields to exclude
   - **.updates** - _Array_: specific updates
+  - **.match** - _Array_: `where` style queryconditions
   - **.limit** - _Number_: number of results to return
   - **.offset** - _Number_ "start at" index value of results to return
   - **.order** - _Array_ contains `{}`:
     - **.direction** - ascending or descending
     - **.index** - _String_ to sort on
-  - **.constraints** - _Array_: `where` style conditions
   - **.meta** - _Object_ : arbitrary data hash
 
 
@@ -261,25 +261,25 @@ Multiple ordering objects in the `.order` array should apply sub sorting, in the
 ```
 
 
-### .constraints
+### .match
 
 > **Warning:** this section is under review and may introduce breaking changes in future versions
 
-Type: **Array** of constraint objects
+Type: **Array** of match objects
 
-Constraints take the form: `{ field: $, operator: $, condition: $ }`
+Matching conditions take the form: `{ field: $, operator: $, condition: $ }`
 
 ```js
 {
   resource: 'users',
-  constraints: [
+  match: [
     { field: 'cars.age', operator: 'lt', condition: 48 },
     { field: 'state', operator: 'in', condition: ['CA','NY','WA'] }
   ]
 }
 ```
 
-The constraint operators are:
+The condition operators are:
 
 - **eq** - Equals
 - **neq** - Not equals
