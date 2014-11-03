@@ -23,7 +23,7 @@ An example _Qo_:
     {field:'followers', operator:'gte', condition:100},
     {field:'state', operator:'nin', condition:['CA']}
   ],
-  fields: [ 'id' ]
+  include: [ 'id' ]
 }
 /* Update all users outside of California who have 100
 or more followers to 'platinum' status, add 25 credits
@@ -53,8 +53,8 @@ Query objects comprise:
   - **.resource** - _String_ : model `key` to query
   - **.content** - _Array_: Data to process
   - **.ids** - _Array_: `ids`
-  - **.fields** - _Array_: select `fields` to return
-  - **.excludeFields** - _Array_: select `fields` to exclude
+  - **.include** - _Array_: whitelist fields to return
+  - **.exclude** - _Array_: blacklist fields to exclude
   - **.limit** - _Number_: number of results to return
   - **.offset** - _Number_ "start at" index value of results to return
   - **.order** - _Array_ contains `{}`:
@@ -127,32 +127,35 @@ A simple array of entity IDs to which the `.action` should apply the `.data` or 
 ```
 
 
-### .fields
+### .include
 
 Type: **Array** of strings
 
-Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.fields` are present, return all fields unless excluded by `.excludeFields`.
+Whitelist. Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.include` is present, return all fields unless excluded by `.exclude`.
 
 ```js
 {
   action: 'find',
   resource: 'artists',
-  fields: [ 'name', 'bio' ]
+  include: [ 'name', 'bio' ]
 }
 ```
 
 
-### .excludeFields
+### .exclude
 
 Type: **Array** of strings
 
-Similar to `.fields` except this lists fields to NOT return. Exclude fields have precedent if a field appears in both `.fields` and `.excludeFields`.
+Blacklist. List of fields NOT to return.
+
+Where both exclude and include are present in a Qo, only `include` is honoured (ie. `exclude` is discarded and ignored).
+
 
 ```js
 {
   action: 'find',
   resource: 'guitars',
-  excludeFields: ['price']
+  exclude: ['price']
 }
 ```
 
