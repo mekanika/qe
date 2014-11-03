@@ -51,7 +51,7 @@ Query objects comprise:
 
   - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, `save`
   - **.resource** - _String_ : model `key` to query
-  - **.content** - _Array_: Data to process
+  - **.body** - _Array_: Data to process
   - **.ids** - _Array_: `ids`
   - **.include** - _Array_: whitelist fields to return
   - **.exclude** - _Array_: blacklist fields to exclude
@@ -291,19 +291,19 @@ The condition operators are:
 - **gte** - Greater than or equal to `>=`
 
 
-### .content
+### .body
 
 Type: **Array** of data payloads
 
 Data payloads are usually Objects of arbitrary structure.
 
-`.content` is **always** an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
+`.body` is **always** an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
 
 ```js
 {
   action: 'create',
   resource: 'guitars',
-  content: [
+  body: [
     {label:'Fender Stratocaster', price:450.75},
     {label:'Parker Fly', price:399.00}
   ]
@@ -322,7 +322,7 @@ Meta data store acts as a catch-all for context specific meta information that m
   action: 'update',
   resource: 'guitars',
   ids: ['11523'],
-  content: [ {price:50} ],
+  body: [ {price:50} ],
   meta: {
     _authToken: 'xyzqwerty098'
   }
