@@ -56,12 +56,10 @@ Query objects comprise:
   - **.include** - _Array_: whitelist fields to return
   - **.exclude** - _Array_: blacklist fields to exclude
   - **.updates** - _Array_: specific updates
-  - **.match** - _Array_: `where` style queryconditions
+  - **.match** - _Array_: `where` style query conditions
   - **.limit** - _Number_: number of results to return
   - **.offset** - _Number_ "start at" index value of results to return
-  - **.order** - _Array_ contains `{}`:
-    - **.direction** - ascending or descending
-    - **.index** - _String_ to sort on
+  - **.sort** - _Array_ of strings: order on keys
   - **.meta** - _Object_ : arbitrary data hash
 
 
@@ -231,34 +229,35 @@ Assume **no** offset if none present.
 
 
 
-### .order
+### .sort
 
-Type: **Array** of sort order objects
+Type: **Array** of strings
 
-Ordering objects take the form: `{ direction: $dir, index: $index }` where _either_ direction or index may not be present.
+Ordering strings take the form: `"[-][$field]"` where the first character may optionally be a `"-"` to indicate reverse sorting, and the `"$field"` may be a text string to sort on.
+
+The empty string `""` indicates a default sort (usually an ascending list sorted by the default key, usually 'id'). A `"-"` string would indicate a descending list sorted on the default key.
 
 As such, the following are valid:
 
 ```js
 // Only specify a direction to sort results on
-{ order: [ {direction:'asc'} ] }
+{ sort: ["-"] }
 
 // Only specify an index to sort on
-{ order: [ {index: 'country'} ] }
+{ sort: [ "country" ] }
 ```
 
-_Qo_ can request a sorting order by specifying a direction (`asc` or `desc`) on a specific `index`.
-
-Multiple ordering objects in the `.order` array should apply sub sorting, in the order of declaration in the array.
+Sub sorting is provided by adding unique parameters to order against:
 
 ```js
 {
-  order: [
-    {direction:'asc', index:'name'},
-    {direction:'desc', index:'price'}
+  sort: [
+    "-age", "name"
   ]
 }
+// Descending `age`, and ascending `name` for same age
 ```
+
 
 
 ### .match
