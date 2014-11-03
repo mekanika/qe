@@ -15,7 +15,7 @@ An example _Qo_:
 {
   resource: 'users',
   action: 'update',
-  modifiers: [
+  updates: [
     {set: 'status', value: 'platinum'},
     {inc: 'credits', value: 25}
   ],
@@ -55,12 +55,12 @@ Query objects comprise:
   - **.ids** - _Array_: `ids`
   - **.include** - _Array_: whitelist fields to return
   - **.exclude** - _Array_: blacklist fields to exclude
+  - **.updates** - _Array_: specific updates
   - **.limit** - _Number_: number of results to return
   - **.offset** - _Number_ "start at" index value of results to return
   - **.order** - _Array_ contains `{}`:
     - **.direction** - ascending or descending
     - **.index** - _String_ to sort on
-  - **.modifiers** - _Array_: specific updates
   - **.constraints** - _Array_: `where` style conditions
   - **.meta** - _Object_ : arbitrary data hash
 
@@ -117,7 +117,7 @@ Some actions may not use a resource, most do.
 
 Type: **Array** of strings or numbers
 
-A simple array of entity IDs to which the `.action` should apply the `.data` or `.modifiers`. If `ids` are provided, the `.action` should **only** apply to those ids provided.
+A simple array of entity IDs to which the `.action` should apply the `.data` or `.updates`. If `ids` are provided, the `.action` should **only** apply to those ids provided.
 
 ```js
 {
@@ -160,13 +160,13 @@ Where both exclude and include are present in a Qo, only `include` is honoured (
 ```
 
 
-###.modifiers
+###.updates
 
-Type: **Array** of modifier objects
+Type: **Array** of update objects
 
-Modifier object format: `{ $type: $field [, value: $val ] }`
+Update object format: `{ $type: $field [, value: $val ] }`
 
-Modifiers are explicit _update_ instructions that inform changes to specific _fields_ in an existing resource. If `.modifiers` is present, the _Qo_ `action` should be `update`.
+Updates are explicit instructions that inform changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` should be `update`.
 
 Example:
 ```js
@@ -174,7 +174,7 @@ Example:
   action: 'update',
   resource: 'wine',
   ids: ['4jn6014jmns058sa41'],
-  modifiers: [
+  updates: [
     {set:'age', value:21},
     {unset:'status'},
     {inc:'price', value:-5}
@@ -182,7 +182,7 @@ Example:
 }
 ```
 
- Modifier types are:
+Update types are:
 
 - **set** : set `field` to `value`
 ```js
