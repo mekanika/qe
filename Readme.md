@@ -166,7 +166,7 @@ Type: **Array** of modifier objects
 
 Modifier object format: `{ $type: $field [, value: $val ] }`
 
-Modifiers are explicit _update_ instructions that inform changes to specific _fields_ in a resource. If `.modifiers` is present, the _Qo_ `action` should be `update`.
+Modifiers are explicit _update_ instructions that inform changes to specific _fields_ in an existing resource. If `.modifiers` is present, the _Qo_ `action` should be `update`.
 
 Example:
 ```js
@@ -197,11 +197,6 @@ Example:
 - **inc** : modify the `field` by the `value` (+ve or -ve)
 ```js
 {inc:'price', value:-5}
-```
-
-- **rename** : renames a `field`. This usually  _changes schema_ - beware!
-```js
-{rename:'price', value:'cost'}
 ```
 
 
