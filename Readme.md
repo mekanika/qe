@@ -334,23 +334,30 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 ### .match
 
-> **Warning:** this section is under review and may introduce breaking changes in future versions
-
 Type: **Array** of match objects
 
-Matching conditions take the form: `{ field: $, operator: $, condition: $ }`
+> Note: `match` conditions are _ignored_ if `ids` are provided
+
+Matching conditions take the form: `{ $field: {$op:$value} }`, where:
+
+- `$field` is the name of the field to match on
+- `$op` is a match operator (see below)
+- `$value` is a scalar value or Array of scalars
+
+Example:
 
 ```js
 {
-  resource: 'users',
   match: [
-    { field: 'cars.age', operator: 'lt', condition: 48 },
-    { field: 'state', operator: 'in', condition: ['CA','NY','WA'] }
+    {age: {gte: 21}},
+    {state: {in: ['CA', 'NY'] }
   ]
 }
 ```
 
-The condition operators are:
+#### match operators
+
+The current reserved match operators are:
 
 - **eq** - Equals
 - **neq** - Not equals
