@@ -1,5 +1,18 @@
 # **Qo** - Query objects
 
+---
+
+> **Status**: This is a _DRAFT_ specification and work in progress.
+>
+> Each section (and some subsections) are marked with a _Stability_ code explained below:
+>
+> - 1 - **Experimental**: Recently introduced. Likely to change or be removed.
+> - 2 - **Unstable**: Settling but not stable. May change or be removed.
+> - 3 - **Stable**: Tested and stable. Only minor changes if any.
+> - 4 - **Frozen**: Unlikely to ever change.
+
+---
+
 Query objects _(Qo)_ seek to:
 
 - provide a _standardised_ description for arbitrary requests
@@ -71,6 +84,8 @@ All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be s
 
 ### .action
 
+> Stability:  3 - **Stable**
+
 Type: **String**
 
 The `action` usually maps to the method that is invoked, but generally describes what "to do".
@@ -98,6 +113,8 @@ The action taxonomy **MAY** be extended arbitrarily to provide for alternate fun
 
 ###.resource
 
+> Stability:  3 - **Stable**
+
 Type: **String**
 
 A `resource` points to a unique entity type to act upon, like a table (SQL), a collection (Document stores), a resource (REST). It is almost always a unique reference to some end-point that an `action` will apply to.
@@ -115,9 +132,11 @@ Some actions might _not_ use a resource, most do.
 
 ###.ids
 
+> Stability:  3 - **Stable**
+
 Type: **Array** of strings or numbers
 
-A simple array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
+An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
 
 If `ids` are provided then any `match` conditions **MUST** be ignored.
 
@@ -130,6 +149,8 @@ If `ids` are provided then any `match` conditions **MUST** be ignored.
 
 
 ### .body
+
+> Stability:  2 - **Unstable**
 
 Type: **Array** of data elements
 
@@ -165,6 +186,10 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 
 ### .include
 
+> Stability:  2 - **Unstable**
+>
+>  **TODO**: Requires implementation tests
+
 Type: **Array** of strings
 
 Whitelist. Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.include` is present, all fields **SHOULD** be returned unless excluded by `.exclude`.
@@ -179,6 +204,10 @@ Whitelist. Selects the fields from the `.resource` **to return** with the result
 
 
 ### .exclude
+
+> Stability:  2 - **Unstable**
+>
+>  **TODO**: Requires implementation tests
 
 Type: **Array** of strings
 
@@ -196,7 +225,11 @@ Where both exclude and include are present in a Qo, only `include` is honoured (
 ```
 
 
-###.updates
+### .updates
+
+> Stability:  2 - **Unstable**
+>
+> **TODO**: Check that update object structure works in real world tests
 
 Type: **Array** of update objects
 
@@ -272,6 +305,8 @@ Qo **MAY** specify other update types (that **SHOULD** be non-idempotent operato
 
 ### .limit
 
+> Stability:  3 - **Stable**
+
 Type: **Number**
 
 Maximum number of results to return.
@@ -281,6 +316,10 @@ Assume **no** limit if no present. Adapter **MAY** restrict results anyway.
 
 
 ### .offset
+
+> Stability:  1 - **Experimental**
+>
+> **TODO**: consider offset vs skip. Are we passing a "Starting at" value or a "skip x" value. Are these different fields? How to represent the difference?
 
 Type: **Number**
 
@@ -302,6 +341,8 @@ Assume **no** offset if none present.
 
 
 ### .sort
+
+> Stability:  2 - **Unstable**
 
 Type: **Array** of strings
 
@@ -333,6 +374,10 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 
 ### .match
+
+> Stability:  2 - **Unstable**
+>
+> **TODO**: Ensure parsing of new match object structure works well, and test out other types of match operators in object structure constraints.
 
 Type: **Array** of match objects
 
@@ -375,6 +420,8 @@ The current reserved match operators are:
 
 ### .meta
 
+> Stability: 1 - **Experimental**
+
 Type: **Object** of arbitrary data
 
 Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Think of it like a 'Header' block in an HTTP request. **MAY** contain arbitrary data.
@@ -394,5 +441,7 @@ Meta data store acts as a catch-all for context specific meta information that m
 
 
 ## License
+
+> Stability: 3 - **Stable**
 
 GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL3+](https://www.gnu.org/licenses/lgpl.html)).
