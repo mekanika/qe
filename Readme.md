@@ -117,7 +117,9 @@ Some actions might _not_ use a resource, most do.
 
 Type: **Array** of strings or numbers
 
-A simple array of entity IDs to which the `.action` **SHOULD** apply the `.data` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
+A simple array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
+
+If `ids` are provided then any `match` conditions **MUST** be ignored.
 
 ```js
 {
@@ -360,6 +362,7 @@ The condition operators are:
 - **gt** - Greater than `>`
 - **gte** - Greater than or equal to `>=`
 
+> Note: `match` conditions are _ignored_ if `ids` are provided
 
 
 
