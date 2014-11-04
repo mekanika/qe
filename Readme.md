@@ -38,43 +38,38 @@ to their balance, and return only their ids. */
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
 
-## Structure
+### Fields
 
-The only required parameter in a query is the `action`. As such the simplest _Qo_ would be:
+Query objects **MAY** include the following fields:
 
-```js
-{ action: 'special' }
-```
+  - **action** - _String_ `create`, `find`, `update`, `remove`, `save`
+  - **resource** - _String_ query target
+  - **ids** - _Array_ of String `ids`
+  - **body** - _Array_ of data elements
+  - **include** - _Array_ of String whitelist fields to return
+  - **exclude** - _Array_ of String blacklist fields to exclude
+  - **updates** - _Array_ of specific update objects
+  - **limit** - _Number_ of results to return
+  - **offset** - _Number_ "start at" index value of results to return
+  - **sort** - _Array_ of String keys to sort against
+  - **match** - _Array_ of `where` style conditions
+  - **meta** - _Object_ : arbitrary data hash
 
-All other parameters are optional and should be handled as such.
+A _Qo_ **SHOULD NOT** have any other fields.
+
+The simplest possible _Qo_ is a no-op, represented as an empty object:
+
+    {}
+
 
 ### Serialisation
 
 All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be serialised as JSON.
 
-### Parameters
 
-Query objects comprise:
-
-  - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, `save`
-  - **.resource** - _String_ : model `key` to query
-  - **.ids** - _Array_: `ids`
-  - **.body** - _Array_: Data to process
-  - **.include** - _Array_: whitelist fields to return
-  - **.exclude** - _Array_: blacklist fields to exclude
-  - **.updates** - _Array_: specific updates
-  - **.limit** - _Number_: number of results to return
-  - **.offset** - _Number_ "start at" index value of results to return
-  - **.sort** - _Array_ of strings: order on keys
-  - **.match** - _Array_: `where` style query conditions
-  - **.meta** - _Object_ : arbitrary data hash
-
-
-## Properties
+## Fields
 
 ### .action
-
-**Required** - An action **MUST** be provided.
 
 Type: **String**
 
@@ -88,7 +83,7 @@ The `action` usually maps to the method that is invoked, but generally describes
 }
 ```
 
-The following are **standard** actions:
+The following are **standard** actions. An API consuming _Qo_ **SHOULD** handle these actions sensibly:
 
 - **create**: make new
 - **find**: locate. Similar to `read` (a very simple find).
