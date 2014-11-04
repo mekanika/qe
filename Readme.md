@@ -51,7 +51,7 @@ to their balance, and return only their ids. */
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
 
-### Fields
+## Structure
 
 Query objects **MAY** include the following fields:
 
@@ -80,7 +80,7 @@ The simplest possible _Qo_ is a no-op, represented as an empty object:
 All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be serialised as JSON.
 
 
-## Fields
+## Field Details
 
 ### .action
 
@@ -213,7 +213,7 @@ Type: **Array** of strings
 
 Blacklist. List of fields that **SHOULD NOT** be returned.
 
-Where both exclude and include are present in a Qo, only `include` is honoured (ie. `exclude` is discarded and ignored).
+Where both exclude and include are present in a Qo, only `include` **SHOULD** be honoured (ie. `exclude` is discarded and ignored).
 
 
 ```js
@@ -230,6 +230,8 @@ Where both exclude and include are present in a Qo, only `include` is honoured (
 > Stability:  2 - **Unstable**
 >
 > **TODO**: Check that update object structure works in real world tests
+> Do updates need to support 'deep updates' eg:
+> `{add:"users.cars.reviews", value:"Great!"}`
 
 Type: **Array** of update objects
 
@@ -271,7 +273,7 @@ An example query with an `updates` field:
 //   });
 ```
 
-Default update types are:
+Reserved update operators are:
 
 - **inc** : modify a Number `field` by the `value` (+ve or -ve).
 ```js
@@ -296,7 +298,7 @@ Default update types are:
 {pull:'comment_ids', value:['3','17']}
 ```
 
-Qo **MAY** specify other update types (that **SHOULD** be non-idempotent operators). For example:
+Qo **MAY** specify other update operators (that **SHOULD** be non-idempotent operators). For example:
 
 ```js
 {multiply:'score', value:3}
@@ -311,7 +313,7 @@ Type: **Number**
 
 Maximum number of results to return.
 
-Assume **no** limit if no present. Adapter **MAY** restrict results anyway.
+Assume **no** limit if no present. Qo services **MAY** restrict results anyway.
 
 
 
