@@ -236,7 +236,7 @@ An example query with an `updates` field:
 //   });
 ```
 
-Update types are:
+Default update types are:
 
 - **inc** : modify a Number `field` by the `value` (+ve or -ve).
 ```js
@@ -259,6 +259,12 @@ Update types are:
   - Object: _Error_
 ```js
 {pull:'comment_ids', value:['3','17']}
+```
+
+Qo **MAY** specify other update types (that **SHOULD** be non-idempotent operators). For example:
+
+```js
+{multiply:'score', value:3}
 ```
 
 
