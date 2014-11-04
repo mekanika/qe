@@ -422,6 +422,30 @@ Qo **MAY** specify alternative custom operators, eg:
 ]}
 ```
 
+#### Deep matches
+
+> Stability:  1 - **Experimental**
+>
+> **TODO**: Requires testing in real world use cases
+
+`$field` **MAY** present a dot notation property (eg. `dob.year`) to match on _complex properties_. In this case the match **SHOULD** apply to the sub-property. For example:
+
+```js
+// Match users who:
+//  - have address.state in 'CA'
+//  - and a car in the array of `cars` < 1970
+{
+  action: 'find',
+  resource: 'users',
+  match: [
+    { 'address.state': {in:['CA']} },
+    { 'cars.year': {lt:1970} }
+  ]
+}
+```
+
+Where a field specifying a sub-property match is an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `{lt: 1970}`.
+
 
 
 
