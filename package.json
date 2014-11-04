@@ -1,7 +1,7 @@
 {
   "name": "mekanika-qo",
-  "version": "0.3.0",
-  "description": "Qo - Query Object specification",
+  "version": "0.4.0",
+  "description": "Qo - Query object specification",
   "repository": {
     "type": "git",
     "url": "https://github.com/mekanika/qo.git"

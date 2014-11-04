@@ -1,3 +1,28 @@
+0.4.0 - 4 November 2014
+=====
+
+Changed:
+
+- BREAKING: Match object structure changed to `{$field:{$op:$value}}`
+- Require 0|1 body element when specifying 1+ `ids` or `match` conditions
+- If `ids` are provided, `match` conditions apply only to that subset of ids
+
+Added:
+
+- `populate` field definition
+- Stability level for each feature (draft spec helpers)
+- Non-idempotent update operators: `push` and `pull`
+- Option to extend update types with custom non-idempotent operators
+- Match objects may use custom operators
+- Match object fields may use "deep matching" through dot notaion: `car.age`
+
+Removed:
+
+- BREAKING: Requirement for Qo to have an `action`
+- BREAKING: Idempotent update operators: `set` and `unset`
+
+
+
 0.3.0 - 3 November 2014
 =====
 
