@@ -66,6 +66,7 @@ Query objects **MAY** include the following fields:
   - **offset** - _Number_ "start at" index value of results to return
   - **sort** - _Array_ of String keys to sort against
   - **match** - _Array_ of `where` style conditions
+  - **populate** - _Object_ hash of `key:subquery` tuples
   - **meta** - _Object_ : arbitrary data hash
 
 A _Qo_ **SHOULD NOT** have any other fields.
@@ -450,6 +451,70 @@ Qo **MAY** specify alternative custom operators, eg:
 
 Where a field specifying a sub-property match is an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `{lt: 1970}`.
 
+
+### .populate
+
+> Stability: 1 - **Experimental**
+>
+>  Should a Qo be able to represent foreign key? Perhaps even `{resource: '$res.$key'}`
+> Defaults for `$subquery`:
+>
+> - `resource` assumed as $field
+> - foreign `$key` assumed as `$parent_resource + '_id'`
+> - Fetching (if required):
+>   - `{match: [ {$key: {eq: $parent_id}} ]`
+>   - OR `{ids: $parent[ $field ]}`
+
+Type: **Object** of `key:query` tuples
+
+"Populates" fields that refer to other resources.
+
+The structure of a populate tuple:
+
+```js
+{ populate: {'$field': <$subquery{}>} }
+```
+
+`.populate` **MAY** contain multiple `$field`.
+
+The `$subquery` **MAY** be a blank _Qo_ `{}`.
+
+In the absence of defining query parameters (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
+
+Qo services **SHOULD** populate entities that _belong to_ the parent. Determining relationship (eg. defining 'has' and 'belongsTo' style associations through techniques not limited to foreign keys) is the responsibility of the application or service.
+
+Populate sub-queries **MAY** contain:
+
+- **resource** - explicitly define the resource to query
+- **match** - loads only matching operators
+- **ids** - OR specify exactly which records to load
+- **include/exclude** - sparse fields returned
+- **limit** - restrict number of populated records
+- **action** - "find" (field may be omitted - presumed as "find")
+
+Subquery action **MUST** be interpreted as "find", even if not provided.
+
+Example _Qo_ with populate:
+
+```js
+// Find all users, and:
+// Populate 'entries' field with no more than 5 posts
+// with higher 3 rating, but exclude post.comments
+{
+  action: 'find',
+  resource: 'users',
+  populate: {
+    'entries': {
+      resource: 'posts',
+      match: [{rating: {gt:3}}],
+      exclude: ['comments'],
+      limit: 5
+    }
+  }
+}
+```
+
+> **Note**: It is the responsibility of the application to maintain and provide _relation_ maps between populate keys and resources (e.g. the knowledge that the `entries` property on a `users` maps to the `posts` resource, and for example, where necessary that `posts` link to their users via `author_id`). If relation maps are not provided/known, it is up to the implementing Qo service to determine how to define and handle these.
 
 
 
