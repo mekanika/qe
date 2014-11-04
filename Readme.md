@@ -89,7 +89,7 @@ All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be s
 
 Type: **String**
 
-The `action` usually maps to the method that is invoked, but generally describes what "to do".
+The `action` is a _verb_ that describes the intended process to invoke.
 
 ```js
 {
@@ -99,17 +99,17 @@ The `action` usually maps to the method that is invoked, but generally describes
 }
 ```
 
-The following are **standard** actions. An API consuming _Qo_ **SHOULD** handle these actions sensibly:
+The following are reserved action types. An API consuming _Qo_ **SHOULD** handle these defaults:
 
 - **create**: make new
-- **find**: locate. Similar to `read` (a very simple find).
+- **find**: locate
 - **remove**: delete
-- **update**: partial save. Only passes fields that have changed.
 - **save**: idempotent save of entire data structure
+- **update**: modify
 
-These actions **SHOULD NOT** be aliased or have their intended meaning altered.
+These action types **SHOULD NOT** be aliased or have their intended meaning altered.
 
-The action taxonomy **MAY** be extended arbitrarily to provide for alternate functions.
+Qo **MAY** specify other (custom) action types.
 
 
 ###.resource
@@ -139,7 +139,7 @@ Type: **Array** of strings or numbers
 
 An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
 
-If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of results.
+If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of ids.
 
 Example `.ids` usage:
 
@@ -318,6 +318,10 @@ Maximum number of results to return.
 
 Assume **no** limit if no present. Qo services **MAY** restrict results anyway.
 
+```js
+{ limit: 25 }
+```
+
 
 
 ### .offset
@@ -386,7 +390,9 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 Type: **Array** of match objects
 
-If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of results.
+Used to specify entities that meet matching criteria.
+
+If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of ids.
 
 Matching conditions take the form: `{ $field: {$op:$value} }`, where:
 
@@ -475,9 +481,14 @@ The structure of a populate tuple:
 { populate: {'$field': <$subquery{}>} }
 ```
 
-`.populate` **MAY** contain multiple `$field`.
-
 The `$subquery` **MAY** be a blank _Qo_ `{}`.
+
+`.populate` **MAY** contain multiple `$field` keys. For example:
+
+```js
+{ populate: {'posts':{}, 'tags':{}} }
+```
+
 
 In the absence of defining query parameters (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
 
