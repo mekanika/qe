@@ -56,15 +56,15 @@ Query objects comprise:
 
   - **.action** - _String_ (required): `create`, `find`, `update`, `remove`, `save`
   - **.resource** - _String_ : model `key` to query
-  - **.body** - _Array_: Data to process
   - **.ids** - _Array_: `ids`
+  - **.body** - _Array_: Data to process
   - **.include** - _Array_: whitelist fields to return
   - **.exclude** - _Array_: blacklist fields to exclude
   - **.updates** - _Array_: specific updates
-  - **.match** - _Array_: `where` style query conditions
   - **.limit** - _Number_: number of results to return
   - **.offset** - _Number_ "start at" index value of results to return
   - **.sort** - _Array_ of strings: order on keys
+  - **.match** - _Array_: `where` style query conditions
   - **.meta** - _Object_ : arbitrary data hash
 
 
@@ -126,6 +126,40 @@ A simple array of entity IDs to which the `.action` **SHOULD** apply the `.data`
 {
   action: 'remove',
   ids: ['554120', '841042']
+}
+```
+
+
+### .body
+
+Type: **Array** of data elements
+
+`.body`is an array containing one or more elements, (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
+
+A Qo `action` **SHOULD** apply to each element in the `.body` array.
+
+_However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the data element to `.ids`
+
+```js
+// Example create multiple 'guitars'
+{
+  action: 'create',
+  resource: 'guitars',
+  body: [
+    {label:'Fender Stratocaster', price:450.75},
+    {label:'Parker Fly', price:399.00}
+  ]
+}
+```
+
+```js
+// Example specifying `ids` field
+// (note ONLY one object in body)
+{
+  action: 'update',
+  resource: 'guitars',
+  ids: ['12','35'],
+  body: [{price: 250.00}]
 }
 ```
 
@@ -296,24 +330,6 @@ The condition operators are:
 - **gte** - Greater than or equal to `>=`
 
 
-### .body
-
-Type: **Array** of data payloads
-
-Data payloads are usually Objects of arbitrary structure.
-
-`.body` **MUST always** be an Array, even when your payload is only one object. Usually requires applying the action to each object in the array.
-
-```js
-{
-  action: 'create',
-  resource: 'guitars',
-  body: [
-    {label:'Fender Stratocaster', price:450.75},
-    {label:'Parker Fly', price:399.00}
-  ]
-}
-```
 
 
 ### .meta
