@@ -138,7 +138,9 @@ Type: **Array** of strings or numbers
 
 An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
 
-If `ids` are provided then any `match` conditions **MUST** be ignored.
+If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of results.
+
+Example `.ids` usage:
 
 ```js
 {
@@ -383,7 +385,7 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 Type: **Array** of match objects
 
-> Note: `match` conditions are _ignored_ if `ids` are provided
+If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of results.
 
 Matching conditions take the form: `{ $field: {$op:$value} }`, where:
 
