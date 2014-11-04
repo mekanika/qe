@@ -13,15 +13,17 @@ An example _Qo_:
 
 ```js
 {
-  resource: 'users',
   action: 'update',
+  resource: 'users',
   updates: [
-    {set: 'status', value: 'platinum'},
     {inc: 'credits', value: 25}
   ],
   match: [
     {field:'followers', operator:'gte', condition:100},
     {field:'state', operator:'nin', condition:['CA']}
+  ],
+  body: [
+    {status: 'platinum'}
   ],
   include: [ 'id' ]
 }
@@ -203,37 +205,65 @@ Type: **Array** of update objects
 
 Update object format: `{ $type: $field [, value: $val ] }`
 
-Updates are explicit instructions that inform changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` **MUST** be `update`.
+Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` **MUST** be `update`.
 
-Example:
+Updates **SHOULD** be used for actions that are _NOT idempotent_ (i.e. when identical queries may return different results and/or leave the service in differing states).
+
+These operations would roughly correspond to HTTP `PATCH` requests on resources.
+
+> Note: For `set`/`unset` style operations, simply pass those fields in the `.body` field of the Qo
+
+An example query with an `updates` field:
+
 ```js
+// Clearly describes an append/"add to" operation
 {
-  action: 'update',
-  resource: 'wine',
-  ids: ['4jn6014jmns058sa41'],
-  updates: [
-    {set:'age', value:21},
-    {unset:'status'},
-    {inc:'price', value:-5}
+  action:'update',
+  resource:'users',
+  ids:['123'],
+  update: [
+    {add:'comments', value:['13','21']}
   ]
 }
+// In HTTP parlance:
+// PATCH /users/123
+// Content-Type: application/json-patch+json
+//
+// [
+//   {"op":"add","path":"/comments","value":["13","21"]}
+// ]
+
+// In default Mongo parlance:
+// db.users.update(
+//   {_id:'123'},
+//   {$push:
+//     { "comments": {$each: ["13","21"]} }
+//   });
 ```
 
 Update types are:
 
-- **set** : set `field` to `value`
-```js
-{set:'name', value:'Slash'}
-```
-
-- **unset** : remove any value from `field` (similar to `set` to `undefined`, but may be implemented differently by various _Qo_-aware APIs)
-```js
-{unset:'secret'}
-```
-
-- **inc** : modify the `field` by the `value` (+ve or -ve)
+- **inc** : modify a Number `field` by the `value` (+ve or -ve).
 ```js
 {inc:'price', value:-5}
+```
+
+- **push**: appends each `value` to the field. Where `field` is:
+  - Number: sum the values
+  - String: append the value
+  - Array: push the values to the end of the array
+  - Object: set the field to the value
+```js
+{push:'comment_ids', value:['21','45']}
+```
+
+- **pull**: removes the `value` from the field. Where `field` is:
+  - Number: subtract the value
+  - String: _Error_
+  - Array: remove the values from the array
+  - Object: _Error_
+```js
+{pull:'comment_ids', value:['3','17']}
 ```
 
 
