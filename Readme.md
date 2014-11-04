@@ -544,4 +544,4 @@ Meta data store acts as a catch-all for context specific meta information that m
 
 > Stability: 3 - **Stable**
 
-GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL3+](https://www.gnu.org/licenses/lgpl.html)).
+GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL-3.0+](https://www.gnu.org/licenses/lgpl.html)).
