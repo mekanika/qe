@@ -414,7 +414,14 @@ The current reserved match operators are:
 - **gt** - Greater than `>`
 - **gte** - Greater than or equal to `>=`
 
-> Note: `match` conditions are _ignored_ if `ids` are provided
+Qo **MAY** specify alternative custom operators, eg:
+```js
+// Custom 'within' operator
+{match: [
+  {'location': {within:['circle', 2100,3000,20]}}
+]}
+```
+
 
 
 
