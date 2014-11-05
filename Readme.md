@@ -393,19 +393,25 @@ Used to specify entities that meet matching criteria.
 
 If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of ids.
 
-Matching conditions take the form: `{ $field: {$op:$value} }`, where:
+Match objects take the form:
+
+```js
+{ field:'$field', op:'$op', value:$value }
+```
+
+Where:
 
 - `$field` is the name of the field to match on
 - `$op` is a match operator (see below)
-- `$value` is a scalar value or Array of scalars
+- `$value` is a value of type expected by the operator
 
 Example:
 
 ```js
 {
   match: [
-    {age: {gte: 21}},
-    {state: {in: ['CA', 'NY'] }
+    {field:'age', op:'gte', value:21},
+    {field:'state', op:'in', value:['CA', 'NY']}
   ]
 }
 ```
@@ -428,7 +434,11 @@ Qo **MAY** specify alternative custom operators, eg:
 ```js
 // Custom 'within' operator
 {match: [
-  {'location': {within:['circle', 2100,3000,20]}}
+  {
+    field:'location',
+    op:'within',
+    value:['circle', 2100,3000,20]
+  }
 ]}
 ```
 
@@ -448,13 +458,13 @@ Qo **MAY** specify alternative custom operators, eg:
   action: 'find',
   resource: 'users',
   match: [
-    { 'address.state': {in:['CA']} },
-    { 'cars.year': {lt:1970} }
+    { field:'address.state', op:'in', value:['CA'] },
+    { field:'cars.year', op:'lt', value:1970 }
   ]
 }
 ```
 
-Where a field specifying a sub-property match is an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `{lt: 1970}`.
+Where a field specifying a sub-property match is a typed as an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `< 1970`.
 
 
 ### .populate
@@ -467,8 +477,8 @@ Where a field specifying a sub-property match is an Array (eg. the User's `cars`
 > - `resource` assumed as $field
 > - foreign `$key` assumed as `$parent_resource + '_id'`
 > - Fetching (if required):
->   - `{match: [ {$key: {eq: $parent_id}} ]`
->   - OR `{ids: $parent[ $field ]}`
+>   - `{match: [ {$key, 'eq', $parent_id} ]`
+>   - OR `{ids, 'in', $parent[ $field ]}`
 
 Type: **Object** of `key:query` tuples
 
