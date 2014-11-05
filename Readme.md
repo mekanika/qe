@@ -68,7 +68,7 @@ Query objects **MAY** include the following fields:
   - **offset** - _Number_ "start at" index value of results to return
   - **sort** - _Array_ of String keys to sort against
   - **match** - _Array_ of `where` style conditions
-  - **populate** - _Object_ hash of `key:subquery` tuples
+  - **populate** - _Array_ of populate-objects
   - **meta** - _Object_ : arbitrary data hash
 
 A _Qo_ **SHOULD NOT** have any other fields.
@@ -477,57 +477,66 @@ Where a field specifying a sub-property match is a typed as an Array (eg. the Us
 ### .populate
 
 > Stability: 1 - **Experimental**
->
->  Should a Qo be able to represent foreign key? Perhaps even `{resource: '$res.$key'}`
-> Defaults for `$subquery`:
->
-> - `resource` assumed as $field
-> - foreign `$key` assumed as `$parent_resource + '_id'`
-> - Fetching (if required):
->   - `{match: [ {$key, 'eq', $parent_id} ]`
->   - OR `{ids, 'in', $parent[ $field ]}`
 
-Type: **Object** of `key:query` tuples
+Type: **Array** of populate objects
 
 "Populates" fields that refer to other resources.
 
-The structure of a populate tuple:
+The structure of a populate object:
 
 ```js
-{ populate: {'$field': <$subquery{}>} }
+{ field:'$field' [, key:'$key'] [, query: $subqo] }
 ```
 
-The `$subquery` **MAY** be a blank _Qo_ `{}`.
+Where:
 
-`.populate` **MAY** contain multiple `$field` keys. Field keys **MUST** be unique. For example:
+- `$field` is the field to populate
+- `$key` **optional** "foreign key" to associate (usually `id`)
+- `$subqo` **optional** Qo conditions
+
+Populate objects **MUST** be unique by `$field`. For example:
 
 ```js
-{ populate: {'posts':{}, 'tags':{resource:'Tgz'}} }
+{
+  populate: [
+    {field:'posts'},
+    {field:'tags', query:{resource:'Tgz'}}
+  ]
+}
 ```
 
-Populate subqueries are **SHOULD** be "find-style" _Qo_ with the following considerations:
+Populate object `$subqo` **MAY** be a blank _Qo_ `{}`,  and **SHOULD** be a "find-style" _Qo_ with the following considerations:
 
 - `.action` **MUST** be interpreted as "find" if not provided
 - Other action types **SHOULD** be treated as an error
 - Non-"find" type fields, such as `.updates` and `.body` **SHOULD** be ignored and **MAY** be treated as an error
+
+Populate `$subqo` **MAY** nest other `.populate` requests.
 
 Example _Qo_ with populate:
 
 ```js
 // Find all users, and:
 // Populate 'entries' field with no more than 5 posts
-// with higher 3 rating, but exclude post.comments
+// with higher 3 rating, exclude `post.comments`, and
+// sub-populate the `post.sites` field
 {
   action: 'find',
   resource: 'users',
-  populate: {
-    'entries': {
-      resource: 'posts',
-      match: [{field:'rating', op:'gt', value:3}],
-      exclude: ['comments'],
-      limit: 5
+  populate: [
+    {
+      field: 'entries',
+      query: {
+        resource: 'posts',
+        match: [{field:'rating', op:'gt', value:3}],
+        exclude: ['comments'],
+        limit: 5,
+        populate: [
+        {field: 'sites'}
+        ]
+      }
     }
-  }
+  ]
 }
 ```
 
