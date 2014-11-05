@@ -242,7 +242,7 @@ Type: **Array** of update objects
 Update object format:
 
 ```js
-{ field:'$field', op:'$op' [, value: $val ] }
+{ field:'$field', op:'$op', value: $val }
 ```
 
 Where:
