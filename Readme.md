@@ -233,11 +233,23 @@ Where both exclude and include are present in a Qo, only `include` **SHOULD** be
 >
 > **TODO**: Check that update object structure works in real world tests
 > Do updates need to support 'deep updates' eg:
-> `{add:"users.cars.reviews", value:"Great!"}`
+> `{field:"users.cars.reviews", op:'push', value:"Great!"}`
 
 Type: **Array** of update objects
 
-Update object format: `{ $type: $field [, value: $val ] }`
+Update object format:
+
+```js
+{ field:'$field', op:'$op' [, value: $val ] }
+```
+
+Where:
+
+- `$field` is the name of the field to update
+- `$op` is a update operator (see below)
+- `$value` is a value of type expected by the field
+
+> **Note**: Update objects have the same format as match objects
 
 Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` **MUST** be `update`.
 
@@ -256,7 +268,7 @@ An example query with an `updates` field:
   resource:'users',
   ids:['123'],
   update: [
-    {add:'comments', value:['13','21']}
+    {field:'comments', op:'push', value:['13','21']}
   ]
 }
 // In HTTP parlance:
@@ -279,7 +291,7 @@ Reserved update operators are:
 
 - **inc** : modify a Number `field` by the `value` (+ve or -ve).
 ```js
-{inc:'price', value:-5}
+{field:'price', op:'inc', value:-5}
 ```
 
 - **push**: appends each `value` to the field. Where `field` is:
@@ -288,7 +300,7 @@ Reserved update operators are:
   - Array: push the values to the end of the array
   - Object: set the field to the value
 ```js
-{push:'comment_ids', value:['21','45']}
+{field:'comment_ids', op:'push', value:['21','45']}
 ```
 
 - **pull**: removes the `value` from the field. Where `field` is:
@@ -297,13 +309,14 @@ Reserved update operators are:
   - Array: remove the values from the array
   - Object: _Error_
 ```js
-{pull:'comment_ids', value:['3','17']}
+{field:'comment_ids', op:'pull', value:['3','17']}
 ```
 
 Qo **MAY** specify other update operators (that **SHOULD** be non-idempotent operators). For example:
 
 ```js
-{multiply:'score', value:3}
+// Example of custom operator 'multiply'
+{field:'score', op:'multiply', value:3}
 ```
 
 
