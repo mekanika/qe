@@ -13,14 +13,16 @@
 
 ---
 
+_Qo_ are resource oriented **control messages** for APIs.
+
+They do not _do_ anything - they are descriptions consumed by _Qo_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
+
 Query objects _(Qo)_ seek to:
 
 - provide a _standardised_ description for arbitrary requests
 - abstract API 'calls' into discrete transform objects
 - act as _control messages_ for your _Qo_-aware API
 - describe the 'what', leaving the 'how' to you
-
-_Qo_ are drivers for APIs. They do not _do_ anything - they are consumed by _Qo_-aware APIs and used to instruct actions.
 
 An example _Qo_:
 
@@ -29,11 +31,11 @@ An example _Qo_:
   action: 'update',
   resource: 'users',
   updates: [
-    {inc: 'credits', value: 25}
+    {field:'credits', op:'inc', value:25}
   ],
   match: [
-    {field:'followers', operator:'gte', condition:100},
-    {field:'state', operator:'nin', condition:['CA']}
+    {field:'followers', op:'gte', value:100},
+    {field:'state', op:'nin', value:['CA']}
   ],
   body: [
     {status: 'platinum'}
