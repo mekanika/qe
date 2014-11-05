@@ -289,25 +289,17 @@ An example query with an `updates` field:
 
 Reserved update operators are:
 
-- **inc** : modify a Number `field` by the `value` (+ve or -ve).
+- **inc** : modify a scalar Number `field` by the `value` (+ve or -ve).
 ```js
 {field:'price', op:'inc', value:-5}
 ```
 
-- **push**: appends each `value` to the field. Where `field` is:
-  - Number: sum the values
-  - String: append the value
-  - Array: push the values to the end of the array
-  - Object: set the field to the value
+- **push**: array/list operator appends each `value` to the field.
 ```js
 {field:'comment_ids', op:'push', value:['21','45']}
 ```
 
-- **pull**: removes the `value` from the field. Where `field` is:
-  - Number: subtract the value
-  - String: _Error_
-  - Array: remove the values from the array
-  - Object: _Error_
+- **pull**: array/list operator that removes the `value` from the field.
 ```js
 {field:'comment_ids', op:'pull', value:['3','17']}
 ```
