@@ -55,7 +55,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Query objects **MAY** include the following fields:
 
-  - **action** - _String_ `create`, `find`, `update`, `remove`, `save`
+  - **action** - _String_ `create`, `find`, `update`, `remove`
   - **resource** - _String_ query target
   - **ids** - _Array_ of String `ids`
   - **body** - _Array_ of data elements
@@ -104,7 +104,6 @@ The following are reserved action types. An API consuming _Qo_ **SHOULD** handle
 - **create**: make new
 - **find**: locate
 - **remove**: delete
-- **save**: idempotent save of entire data structure
 - **update**: modify
 
 These action types **SHOULD NOT** be aliased or have their intended meaning altered.
