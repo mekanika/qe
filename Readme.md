@@ -513,19 +513,6 @@ The `$subquery` **MAY** be a blank _Qo_ `{}`.
 
 Populate subqueries are **SHOULD** be "find-style" _Qo_ with the following considerations:
 
-In the absence of defining query parameters (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
-
-Qo services **SHOULD** populate entities that _belong to_ the parent. Determining relationship (eg. defining 'has' and 'belongsTo' style associations through techniques not limited to foreign keys) is the responsibility of the application or service.
-
-Populate sub-queries **MAY** contain:
-
-- **resource** - explicitly define the resource to query
-- **match** - loads only matching operators
-- **ids** - OR specify exactly which records to load
-- **include/exclude** - sparse fields returned
-- **limit** - restrict number of populated records
-- **action** - "find" (field may be omitted - presumed as "find")
-
 - `.action` **MUST** be interpreted as "find" if not provided
 - Other action types **SHOULD** be treated as an error
 - Non-"find" type fields, such as `.updates` and `.body` **SHOULD** be ignored and **MAY** be treated as an error
@@ -550,7 +537,11 @@ Example _Qo_ with populate:
 }
 ```
 
-> **Note**: It is the responsibility of the application to maintain and provide _relation_ maps between populate keys and resources (e.g. the knowledge that the `entries` property on a `users` maps to the `posts` resource, and for example, where necessary that `posts` link to their users via `author_id`). If relation maps are not provided/known, it is up to the implementing Qo service to determine how to define and handle these.
+> **Note**: In the absence of a defining subquery (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
+>
+> Qo services **SHOULD** populate entities that _belong to_ the parent. Determining relationship (eg. defining 'has' and 'belongsTo' style associations through techniques not limited to foreign keys) is the responsibility of the application or service.
+>
+> It is the responsibility of the application to maintain and provide _relation_ maps between populate keys and resources (e.g. the knowledge that the `entries` property on a `users` maps to the `posts` resource, and for example, where necessary that `posts` link to their users via `author_id`). If relation maps are not provided/known, it is up to the implementing Qo service to determine how to define and handle these.
 
 
 
