@@ -511,6 +511,7 @@ The `$subquery` **MAY** be a blank _Qo_ `{}`.
 { populate: {'posts':{}, 'tags':{resource:'Tgz'}} }
 ```
 
+Populate subqueries are **SHOULD** be "find-style" _Qo_ with the following considerations:
 
 In the absence of defining query parameters (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
 
@@ -525,7 +526,9 @@ Populate sub-queries **MAY** contain:
 - **limit** - restrict number of populated records
 - **action** - "find" (field may be omitted - presumed as "find")
 
-Subquery action **MUST** be interpreted as "find", even if not provided.
+- `.action` **MUST** be interpreted as "find" if not provided
+- Other action types **SHOULD** be treated as an error
+- Non-"find" type fields, such as `.updates` and `.body` **SHOULD** be ignored and **MAY** be treated as an error
 
 Example _Qo_ with populate:
 
@@ -539,7 +542,7 @@ Example _Qo_ with populate:
   populate: {
     'entries': {
       resource: 'posts',
-      match: [{rating: {gt:3}}],
+      match: [{field:'rating', op:'gt', value:3}],
       exclude: ['comments'],
       limit: 5
     }
