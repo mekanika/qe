@@ -505,10 +505,10 @@ The structure of a populate tuple:
 
 The `$subquery` **MAY** be a blank _Qo_ `{}`.
 
-`.populate` **MAY** contain multiple `$field` keys. For example:
+`.populate` **MAY** contain multiple `$field` keys. Field keys **MUST** be unique. For example:
 
 ```js
-{ populate: {'posts':{}, 'tags':{}} }
+{ populate: {'posts':{}, 'tags':{resource:'Tgz'}} }
 ```
 
 
