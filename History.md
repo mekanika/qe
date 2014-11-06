@@ -1,3 +1,26 @@
+0.5.0 - 6 November 2014
+=====
+
+Changed:
+
+- Rename Query objects to: Query envelopes (Qe)
+- BREAKING: Revert `match` object to `{field:$f, op:$op, value:$val}`
+- BREAKING: Change `update` object to `{field:$f, op:$op, value:$val}`
+- BREAKING: Change `populate` object to `{field:$f [,$key] [,$subqo]}`
+- Populate subquery objects should be 'find-style' Qo
+- BREAKING: `push` and `pull` update operators only work on arrays/list
+
+Added:
+
+- `select` field to replace 'include' and 'exclude'
+
+Removed:
+
+- 'save' reserved `action` type
+- `include` and `exclude`
+
+
+
 0.4.0 - 4 November 2014
 =====
 
