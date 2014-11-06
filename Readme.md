@@ -9,7 +9,7 @@
 > - 1 - **Experimental**: Recently introduced. Likely to change or be removed.
 > - 2 - **Unstable**: Settling but not stable. May change or be removed.
 > - 3 - **Stable**: Tested and stable. Only minor changes if any.
-> - 4 - **Frozen**: Unlikely to ever change.
+> - 4 - **Final**: Unlikely to ever change.
 
 ---
 
@@ -471,7 +471,7 @@ Qo **MAY** specify alternative custom operators, eg:
 }
 ```
 
-Where a field specifying a sub-property match is a typed as an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `< 1970`.
+Where a field specifying a sub-property match is typed as an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `< 1970`.
 
 
 ### .populate
@@ -539,12 +539,6 @@ Example _Qo_ with populate:
   ]
 }
 ```
-
-> **Note**: In the absence of a defining subquery (i.e a blank _Qo_), `.populate` **SHOULD**  return the complete records for all entities referred to or otherwise indexed in the populate `$field`.
->
-> Qo services **SHOULD** populate entities that _belong to_ the parent. Determining relationship (eg. defining 'has' and 'belongsTo' style associations through techniques not limited to foreign keys) is the responsibility of the application or service.
->
-> It is the responsibility of the application to maintain and provide _relation_ maps between populate keys and resources (e.g. the knowledge that the `entries` property on a `users` maps to the `posts` resource, and for example, where necessary that `posts` link to their users via `author_id`). If relation maps are not provided/known, it is up to the implementing Qo service to determine how to define and handle these.
 
 
 
