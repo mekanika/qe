@@ -188,45 +188,32 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 ```
 
 
-### .include
+### .select
 
-> Stability:  2 - **Unstable**
+> Stability:  1 - **Experimental**
 >
->  **TODO**: Requires implementation tests
+> Replacement for `exclude` and `include`
 
 Type: **Array** of strings
 
-Whitelist. Selects the fields from the `.resource` **to return** with the result (rather than returning the entire resource schema). If no `.include` is present, all fields **SHOULD** be returned unless excluded by `.exclude`.
+Field selector acting _either_ as:
+
+- a **whitelist** of fields to return `["name", "age"]`, or
+- a **blacklist** of fields to exclude `["-posts"]`
+
+To act as a blacklist, strings are prepended with a `-`.  Select **SHOULD** only act as a whitelist or a blacklist, not both.
+
+If no `.select` is present, all fields **SHOULD** be returned.
+
 
 ```js
 {
   action: 'find',
   resource: 'artists',
-  include: [ 'name', 'bio' ]
+  select: [ '-name', '-bio' ]
 }
 ```
 
-
-### .exclude
-
-> Stability:  2 - **Unstable**
->
->  **TODO**: Requires implementation tests
-
-Type: **Array** of strings
-
-Blacklist. List of fields that **SHOULD NOT** be returned.
-
-Where both exclude and include are present in a Qo, only `include` **SHOULD** be honoured (ie. `exclude` is discarded and ignored).
-
-
-```js
-{
-  action: 'find',
-  resource: 'guitars',
-  exclude: ['price']
-}
-```
 
 
 ### .updates
