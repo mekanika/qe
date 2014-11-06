@@ -1,4 +1,4 @@
-# **Qo** - Query objects
+# **Qe** - Query envelopes
 
 ---
 
@@ -13,18 +13,18 @@
 
 ---
 
-_Qo_ are resource oriented **control messages** for APIs.
+_Qe_ are resource oriented **control messages** for APIs.
 
-They do not _do_ anything - they are descriptions consumed by _Qo_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
+They do not _do_ anything - they are descriptions consumed by _Qe_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
 
-Query objects _(Qo)_ seek to:
+Query envelopes _(Qe)_ seek to:
 
 - provide a _standardised_ description for arbitrary requests
 - abstract API 'calls' into discrete transform objects
-- act as _control messages_ for your _Qo_-aware API
+- act as _control messages_ for your _Qe_-aware API
 - describe the 'what', leaving the 'how' to you
 
-An example _Qo_:
+An example _Qe_:
 
 ```js
 {
@@ -55,7 +55,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Structure
 
-Query objects **MAY** include the following fields:
+Query envelopes **MAY** include the following fields:
 
   - **action** - _String_ `create`, `find`, `update`, `remove`
   - **resource** - _String_ query target
@@ -71,16 +71,16 @@ Query objects **MAY** include the following fields:
   - **populate** - _Array_ of populate-objects
   - **meta** - _Object_ : arbitrary data hash
 
-A _Qo_ **SHOULD NOT** have any other fields.
+A _Qe_ **SHOULD NOT** have any other fields.
 
-The simplest possible _Qo_ is a no-op, represented as an empty object:
+The simplest possible _Qe_ is a no-op, represented as an empty object:
 
     {}
 
 
 ### Serialisation
 
-All examples in this document are shown as Javascript Objects. _Qo_ **MAY** be serialised as JSON.
+All examples in this document are shown as Javascript Objects. _Qe_ **MAY** be serialised as JSON.
 
 
 ## Field Details
@@ -101,7 +101,7 @@ The `action` is a _verb_ that describes the intended process to invoke.
 }
 ```
 
-The following are reserved action types. An API consuming _Qo_ **SHOULD** handle these defaults:
+The following are reserved action types. An API consuming _Qe_ **SHOULD** handle these defaults:
 
 - **create**: make new
 - **find**: locate
@@ -110,7 +110,7 @@ The following are reserved action types. An API consuming _Qo_ **SHOULD** handle
 
 These action types **SHOULD NOT** be aliased or have their intended meaning altered.
 
-Qo **MAY** specify other (custom) action types.
+Qe **MAY** specify other (custom) action types.
 
 
 ###.resource
@@ -160,7 +160,7 @@ Type: **Array** of data elements
 
 `.body`is an array containing one or more elements, (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
 
-A Qo `action` **SHOULD** apply to each element in the `.body` array.
+A Qe `action` **SHOULD** apply to each element in the `.body` array.
 
 _However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the data element to `.ids`
 
@@ -240,13 +240,13 @@ Where:
 
 > **Note**: Update objects have the same format as match objects
 
-Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qo_ `action` **MUST** be `update`.
+Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qe_ `action` **MUST** be `update`.
 
 Updates **SHOULD** be used for actions that are _NOT idempotent_ (i.e. when identical queries may return different results and/or leave the service in differing states).
 
 These operations would roughly correspond to HTTP `PATCH` requests on resources.
 
-> Note: For `set`/`unset` style operations, simply pass those fields in the `.body` field of the Qo
+> Note: For `set`/`unset` style operations, simply pass those fields in the `.body` field of the Qe
 
 An example query with an `updates` field:
 
@@ -293,7 +293,7 @@ Reserved update operators are:
 {field:'comment_ids', op:'pull', value:['3','17']}
 ```
 
-Qo **MAY** specify other update operators (that **SHOULD** be non-idempotent operators). For example:
+Qe **MAY** specify other update operators (that **SHOULD** be non-idempotent operators). For example:
 
 ```js
 // Example of custom operator 'multiply'
@@ -309,7 +309,7 @@ Type: **Number**
 
 Maximum number of results to return.
 
-Assume **no** limit if no present. Qo services **MAY** restrict results anyway.
+Assume **no** limit if no present. Qe services **MAY** restrict results anyway.
 
 ```js
 { limit: 25 }
@@ -424,7 +424,7 @@ The current reserved match operators are:
 - **gt** - Greater than `>`
 - **gte** - Greater than or equal to `>=`
 
-Qo **MAY** specify alternative custom operators, eg:
+Qe **MAY** specify alternative custom operators, eg:
 ```js
 // Custom 'within' operator
 {match: [
@@ -479,7 +479,7 @@ Where:
 
 - `$field` is the field to populate
 - `$key` **optional** "foreign key" to associate (usually `id`)
-- `$subqo` **optional** Qo conditions
+- `$subqo` **optional** Qe conditions
 
 Populate objects **MUST** be unique by `$field`. For example:
 
@@ -492,7 +492,7 @@ Populate objects **MUST** be unique by `$field`. For example:
 }
 ```
 
-Populate object `$subqo` **MAY** be a blank _Qo_ `{}`,  and **SHOULD** be a "find-style" _Qo_ with the following considerations:
+Populate object `$subqo` **MAY** be a blank _Qe_ `{}`,  and **SHOULD** be a "find-style" _Qe_ with the following considerations:
 
 - `.action` **MUST** be interpreted as "find" if not provided
 - Other action types **SHOULD** be treated as an error
@@ -500,7 +500,7 @@ Populate object `$subqo` **MAY** be a blank _Qo_ `{}`,  and **SHOULD** be a "fin
 
 Populate `$subqo` **MAY** nest other `.populate` requests.
 
-Example _Qo_ with populate:
+Example _Qe_ with populate:
 
 ```js
 // Find all users, and:
