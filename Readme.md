@@ -203,7 +203,7 @@ Some actions might _not_ act `.on` anything, most do.
 
 Type: **Array** of strings or numbers
 
-An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.update`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
+An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.update`. If `.ids` are provided, the `.do` action **SHOULD** **only** apply to those ids provided.
 
 If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of ids.
 
@@ -267,9 +267,9 @@ Example:
       {'and': [
        {age: {gt:21}},
          {state: {in:['CA', 'NY']}}
-        ]},
+      ]},
       {state: {eq:'WA'}}
-      ]
+    ]
   }
 }
 
@@ -344,7 +344,7 @@ Where a field specifying a sub-property match is typed as an Array (eg. the User
 
 Type: **Array** of data elements
 
-`.body`is an array containing one or more elements, (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
+`.body`is an array containing one or more elements (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
 
 A Qe `.do` action **SHOULD** apply to each element in the `.body` array.
 
@@ -406,13 +406,9 @@ Where:
 
 > **Note**: Update objects have the same format as match objects
 
-Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.update` are present, the _Qe_ `do` action **MUST** be `'update'`.
+Updates are explicit instructions that inform **non-idempotent** changes to specific _fields_ in an existing resource. If `.update` is present, the _Qe_ `do` action **MUST** be `'update'`.
 
-Updates **SHOULD** be used for actions that are _NOT idempotent_ (i.e. when identical queries may return different results and/or leave the service in differing states).
-
-These operations would roughly correspond to HTTP `PATCH` requests on resources.
-
-> Note: For `set`/`unset` style operations, simply pass those fields in the `.body` field of the Qe
+> Note: For idempotent `set`/`unset`style operations, simply pass those fields in the `.body` field of the Qe
 
 An example query with an `.update` field:
 
@@ -439,7 +435,7 @@ An example query with an `.update` field:
 //   {"op":"add","path":"/comments","value":["13","21"]}
 // ]
 
-// In default Mongo parlance:
+// In Mongo parlance:
 // db.users.update(
 //   {_id:'123'},
 //   {$push:
@@ -538,7 +534,7 @@ Populate objects **MUST** be unique by `$field`. For example:
 }
 ```
 
-Populate object `$subqe` **MAY** be a blank _Qe_ `{}`,  and **SHOULD** be a "find-style" _Qe_ with the following considerations:
+Populate object `$subqe` **MAY** be a blank _Qe_ `[]`,  and **SHOULD** be a "find-style" _Qe_ with the following considerations:
 
 - `.do` action **MUST** be interpreted as "find" if not provided
 - Other action types **SHOULD** be treated as an error
@@ -586,7 +582,7 @@ Type: **Number**
 
 Maximum number of results to return.
 
-Assume **no** limit if no present. Qe services **MAY** restrict results anyway.
+Assume **no** limit if none specified. Qe services **MAY** restrict results anyway.
 
 ```js
 // Object hash:
@@ -625,6 +621,11 @@ Assume **no** offset if none present.
 
 // Qe:
 ['find',,,,,,,,,1]
+
+// As 'startAt' style:
+{offset: {id: {eq:'1234'}}}
+// Qe:
+[,,,,,,,,,{id:{eq:'1234'}}]
 ```
 
 
