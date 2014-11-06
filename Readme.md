@@ -47,7 +47,7 @@ to their balance, and return only their ids. */
   body: [
     {status: 'platinum'}
   ],
-  updates: [
+  update: [
     {credits: {'inc':25}}
   ],
   select: [ 'id' ]
@@ -70,7 +70,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Query envelopes are lists/arrays of fields with significant ordering and a maximum length of 12. Each position is described by a field detailed below.
 
-_Qe_ in this spec are explained by being shown in a deserialised 'object hash' format for ease of comprehension. Object hashes _ARE NOT_ Query envelopes.
+_Qe_ in this spec are explained by being shown in a deserialised 'object hash' format for ease of comprehension. Object hashes _ARE NOT_ Query envelopes, but may be collapsed to _Qe_.
+
+For clarity, all fields are singular, never plural.
 
 The structure of a Query envelope is described below, according to:
 
@@ -89,7 +91,7 @@ Matching resources:
 Data block:
 
   - `4`: **body** - _Array_ of data elements
-  - `5`: **updates** - _Array_ of update objects
+  - `5`: **update** - _Array_ of update objects
 
 Return controls:
 
@@ -201,7 +203,7 @@ Some actions might _not_ act `.on` anything, most do.
 
 Type: **Array** of strings or numbers
 
-An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.updates`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
+An Array of entity IDs to which the `.action` **SHOULD** apply the `.body` or `.update`. If `ids` are provided, the `.action` **SHOULD** **only** apply to those ids provided.
 
 If `.ids` are provided, `.match` conditions **MUST** apply only to that subset of ids.
 
@@ -381,7 +383,7 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 
 
 
-### index: **`5`** - ".updates"
+### index: **`5`** - ".update"
 
 > Stability:  2 - **Unstable**
 >
@@ -404,7 +406,7 @@ Where:
 
 > **Note**: Update objects have the same format as match objects
 
-Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.updates` are present, the _Qe_ `do` action **MUST** be `'update'`.
+Updates are explicit instructions that inform non-idempotent changes to specific _fields_ in an existing resource. If `.update` are present, the _Qe_ `do` action **MUST** be `'update'`.
 
 Updates **SHOULD** be used for actions that are _NOT idempotent_ (i.e. when identical queries may return different results and/or leave the service in differing states).
 
@@ -412,7 +414,7 @@ These operations would roughly correspond to HTTP `PATCH` requests on resources.
 
 > Note: For `set`/`unset` style operations, simply pass those fields in the `.body` field of the Qe
 
-An example query with an `.updates` field:
+An example query with an `.update` field:
 
 ```js
 // Clearly describes an append/"add to" operation
@@ -421,7 +423,7 @@ An example query with an `.updates` field:
   do:'update',
   on:'users',
   ids:['123'],
-  updates: [
+  update: [
     { comments: {push:['13','21']} }
   ]
 }
@@ -540,7 +542,7 @@ Populate object `$subqe` **MAY** be a blank _Qe_ `{}`,  and **SHOULD** be a "fin
 
 - `.do` action **MUST** be interpreted as "find" if not provided
 - Other action types **SHOULD** be treated as an error
-- Non-"find" type fields, such as `.updates` and `.body` **SHOULD** be ignored and **MAY** be treated as an error
+- Non-"find" type fields, such as `.update` and `.body` **SHOULD** be ignored and **MAY** be treated as an error
 
 Populate `$subqe` **MAY** nest other `.populate` requests.
 
