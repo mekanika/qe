@@ -101,7 +101,7 @@ Return controls:
 Results display:
 
   - `8`: **limit** - _Number_ of results to return
-  - `9`: **offset** - _Number_ "start at" index value of results to return
+  - `9`: **offset** - _Number_ OR match _Object_ index to start results
   - `10`: **sort** - _Array_ of String keys to sort against
 
 And custom data:
@@ -601,14 +601,15 @@ Assume **no** limit if no present. Qe services **MAY** restrict results anyway.
 ### index: **`9`** - ".offset"
 
 > Stability:  1 - **Experimental**
->
-> **TODO**: consider offset vs skip. Are we passing a "Starting at" value or a "skip x" value. Are these different fields? How to represent the difference?
 
-Type: **Number**
+Type: **Number** or match object **Object**
 
-Number of results to skip (ie. start from the `offset`)
+`.offset` enables two methods of modifying the index at which results are returned. When set as a:
 
-**SHOULD** be used in combination with a "find" style `.do` action.
+- **Number** - acts as "skip" (ie. jump over the first 'x' results)
+-  **match Object** - acts as a "start at" index using the format `{field: {op:value}}`. The operator **SHOULD** be `eq` and the 'field' is recommended to be `id`.
+
+Offset **SHOULD** be used in combination with a "find" style `.do` action.
 
 Assume **no** offset if none present.
 
