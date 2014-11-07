@@ -148,7 +148,7 @@ _Qe_ **MAY** be serialised as JSON.
 
 ### index: **`0`** - ".do"
 
-> Stability:  3 - **Stable**
+> Stability:  4 - **Final**
 
 Type: **String**
 
@@ -181,7 +181,7 @@ Qe **MAY** specify other (custom) action types.
 
 ### index:**`1`** - ".on"
 
-> Stability:  3 - **Stable**
+> Stability:  4 - **Final**
 
 Type: **String**
 
@@ -479,9 +479,7 @@ Qe **MAY** specify other update operators (that **SHOULD** be non-idempotent ope
 
 ### index: **`6`** -  ".select"
 
-> Stability:  1 - **Experimental**
->
-> Replacement for `exclude` and `include`
+> Stability:  3 - **Stable**
 
 Type: **Array** of strings
 
@@ -511,13 +509,13 @@ If no `.select` is present, all fields **SHOULD** be returned.
 
 ### index: **`7`** - ".populate"
 
-> Stability: 1 - **Experimental**
+> Stability: 2 - **Unstable**
 
-Type: **Array** of populate objects
+Type: **Object** - a hash of keys populate objects
 
 Populates fields that refer to other resources.
 
-The structure of a populate object:
+The structure of the `.populate` field:
 
 ```js
 { $field: { [key:'$key'] [, query:$subqe] } }
@@ -603,7 +601,7 @@ Assume **no** limit if none specified. Qe services **MAY** restrict results anyw
 
 ### index: **`9`** - ".offset"
 
-> Stability:  1 - **Experimental**
+> Stability:  2 - **Unstable**
 
 Type: **Number** or match object **Object**
 
