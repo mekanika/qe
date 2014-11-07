@@ -64,15 +64,11 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Structure
 
-> Stability: 2 - **Unstable**
+> Stability: 3 - **Stable**
 >
-> Should Qe ALWAYS be length 12? Force allocated length?
-
-Query envelopes are lists/arrays of fields with significant ordering and a maximum length of 12. Each position is described by a field detailed below.
-
-_Qe_ in this spec are explained by being shown in a deserialised 'object hash' format for ease of comprehension. Object hashes _ARE NOT_ Query envelopes, but may be collapsed to _Qe_.
-
-For clarity, all fields are singular, never plural.
+> Active questions regarding **encoding** (either as object hash, ordered list or sparse object. [Discussion ongoing.](https://github.com/mekanika/qe/issues/5)
+>
+> _Key point_: The **structure** and order of _Qe_ is looking solid. Has been decently implemented in [`query`](https://github.com/mekanika/query/) and is undergoing integration tests against the Fixture adapter.
 
 The structure of a Query envelope is described below, according to:
 
@@ -110,7 +106,19 @@ And custom data:
 
 A _Qe_ **MUST NOT** have any other fields.
 
-The simplest possible _Qe_ is a no-op, represented as an empty list:
+The simplest possible _Qe_ is an empty envelope (no-op).
+
+### Encoding
+
+> Stability: 1 - **Experimental**
+>
+> The `query` library stores an **object hash** and can convert to an **ordered list** (currently recommended below). The adapter integration tests end up serialising against the object hash. More tests are required for real use cases.
+
+Query envelopes are significantly ordered lists of fields with a maximum length of 12. Each position is described by a field in the 'Structure' section of this document.
+
+_Qe_ in this spec are explained by being shown in a deserialised 'object hash' format for ease of comprehension. Object hashes _ARE NOT_ Query envelopes, but may be collapsed to _Qe_.
+
+An empty list:
 
     [] // no-op
     [,,,,] // no-op
