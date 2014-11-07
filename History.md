@@ -1,3 +1,29 @@
+0.6.0 - 7 November 2014
+=====
+
+Major BREAKING change to significant ordered list.
+
+Changed:
+
+- "field" objects removed descriptors. ie. are now `{$field, $op, $value}`
+- `.match` is now an object "match container" `{$bool: [mo|mc...]}`
+- Populate objects are now `{$field: {[key:$key] [, query:$qe]}}`
+- Offset accepts number or match object (skip + startAt support)
+- `action` to `do`
+- `resource` to `on`
+- `updates` to `update`
+
+Added:
+
+- List/Array structure with significant ordering
+- `.match` supports nested conditions
+
+Removed:
+
+- Object hash encoding (no longer an object)
+
+
+
 0.5.0 - 6 November 2014
 =====
 
