@@ -31,8 +31,8 @@ An example _Qe_:
 or more followers to 'platinum' status, add 25 credits
 to their balance, and return only their ids. */
 
-// The Qe itself:
-['update','users',,{'and': [{followers: {gte:100}},{state: {nin:['CA']}}]},[{status:'platinum'}],[{credits:{'inc':25}}],,,['id']]
+// Qe - ordered list in JSON:
+["update","users",null,{"and":[{"followers":{"gte":100}},{"state":{"nin":["CA"]}}]},[{"status":"platinum"}],[{"credits":{"inc":25}}],["id"]]
 
 // And exploded in an object hash format:
 {
@@ -52,8 +52,6 @@ to their balance, and return only their ids. */
   ],
   select: [ 'id' ]
 }
-
-
 ```
 
 
@@ -81,7 +79,7 @@ The core action "do _verb_ on _noun_" block:
 
 Matching resources:
 
-  - `2`: **ids** - _Array_ of String `ids`
+  - `2`: **ids** - _Array_ of String or Number `ids`
   - `3`: **match** - _Object_ match container of match object conditions
 
 Data block:
@@ -396,7 +394,7 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 > Stability:  2 - **Unstable**
 >
 > Do updates need to support 'deep updates' eg:
-> `{field:"users.cars.reviews", op:'push', value:"Great!"}`
+> `{"users.cars.reviews":{push::"Great!"}}`
 
 Type: **Array** of update objects
 
@@ -535,10 +533,10 @@ Populate objects **MUST** be unique by `$field`. For example:
 
 ```js
 {
-  populate: [
-    {'posts':{}},
-    {'tags': {query:{resource:'Tgz'}}}
-  ]
+  populate: {
+    'posts':{},
+    'tags': {query:{resource:'Tgz'}}
+  }
 }
 ```
 
@@ -561,22 +559,23 @@ Example _Qe_ with populate:
 {
   do: 'find',
   on: 'users',
-  populate: [{
+  populate: {
     entries: {
       query: {
         on: 'posts',
-        match: {or:[{rating: {gt:3}]},
+        match: { or: [ {rating:{gt:3}} ] },
         select: ['-comments'],
         limit: 5,
-        populate: [
-          {sites:{}}
-        ]}
+        populate: {
+          sites:{}
+        }
       }
-  }]
+    }
+  }
 }
 
 // Qe:
-['find','users',,,,,,[{entries:{query:[,'posts',,{or:[{rating:{gt:3}}]},,['-comments'],[{sites:{}}],5]}}]]
+["find","users",,,,,,{entries:{query:{on:"posts",match:{or:[{rating:{gt:3}}]},select:["-comments"],limit:5,populate:{sites:{}}}}}]
 ```
 
 
