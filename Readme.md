@@ -143,7 +143,7 @@ _Qe_ **MAY** be serialised as JSON.
 ## Field Details
 
 > **Important:** (a note about "index")
->  The index number refers to the **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
+>  The index number refers to the Javascript-style **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
 
 
 ### index: **`0`** - ".do"
@@ -272,7 +272,7 @@ Example:
     'or': [
       {'and': [
        {age: {gt:21}},
-         {state: {in:['CA', 'NY']}}
+       {state: {in:['CA', 'NY']}}
       ]},
       {state: {eq:'WA'}}
     ]
