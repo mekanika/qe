@@ -102,7 +102,7 @@ And custom data:
 
   - `11`: **meta** - _Object_ : arbitrary data hash
 
-A _Qe_ **MUST NOT** have any other fields.
+A _Qe_ **SHOULD NOT** have any other fields.
 
 The simplest possible _Qe_ is an empty envelope (no-op).
 
