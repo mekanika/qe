@@ -352,6 +352,21 @@ Type: **Array** of data elements
 
 `.body`is an array containing one or more elements (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
 
+Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the keys supplied. 
+
+```js
+// Example update all guitars:
+// - set `onSale` field to `true`
+// - set `secretKey` to `undefined` (unset)
+{
+  do: 'update',
+  on: 'guitars',
+  body: [{onSale: true, secret:undefined}]
+}
+```
+
+> Qe implementations **MAY** treat element fields set to `undefined` as an 'UNSET' command for schema-less stores.
+
 A Qe `.do` action **SHOULD** apply to each element in the `.body` array.
 
 _However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the data element to `.ids`
