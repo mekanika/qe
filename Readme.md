@@ -699,6 +699,10 @@ Meta data store acts as a catch-all for context specific meta information that m
 
 ## License
 
-> Stability: 3 - **Stable**
+> Stability: 4 - **Final**
 
-GNU Lesser General Public License, either version 3 of the License, or (at your option) any later version ([LGPL-3.0+](https://www.gnu.org/licenses/lgpl.html)).
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a>
+
+<span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">**Query Envelope Specification**</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+
+Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/mekanika/qe" rel="dct:source">https://github.com/mekanika/qe</a>.
