@@ -500,6 +500,10 @@ An example query with an `.update` field:
 //   });
 ```
 
+> Note: If `.body` is provided and is modifying _the same_ key on a record as the `.update` field, there exists sufficient knowledge to **collapse** the non-idempotent update into the idempotent write (ie. combine the update for that key into the `.body` field). 
+> 
+> As such if both `.update` and `.body` are acting on the same record field, the Qe **SHOULD** return an error.
+
 Reserved update operators are:
 
 - **inc** : modify a scalar Number `field` by the `value` (+ve or -ve).
