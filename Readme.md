@@ -718,6 +718,75 @@ Meta data store acts as a catch-all for context specific meta information that m
 ```
 
 
+## Implementing Qe: **adapters**
+
+> Stability: 1 - **Experimental**
+>
+> - `canX` flags vs. `enabled = ["$feature1", ...]`
+>
+> The currently proposed granularity is ugly because features often have sub-capabilities (eg. `limit: [byNumber, byMatch]`  and `match` having multiple operators and "deepMatch" etc.)
+
+Qe consuming interfaces are referred to as **Adapters**. 
+
+> See the **[Qe Adapter](https://github.com/mekanika/adapter)** repo for a base implementation of this specification.
+
+Services implementing a Qe consuming interface  are strongly **RECOMMENDED** to provide a _documented_ method to return a 'features' object . Much like an HTTP `OPTIONS` request to a resource, this object describes what Qe constructs are supported by a service.
+
+If a field is not present that **SHOULD** be interpreted as **not** supporting a feature. A blank object treats all features as `false`/not-implemented.
+
+If returning a populated features object it **MUST** provide a `qeVersion` string:
+
+- **qeVersion**: `"major.minor"` string of specification version eg. '1.0'
+
+Arrays of strings for actions, updates and match operators:
+
+- **actions**: Actions supported (`create`, `find`, `appcustom`, etc)
+- **updateOps**: Update operators (`push`, `pull`, `inc`, etc)
+- **matchOps**: Array of match operators (`eq`, `neq`,  etc)
+
+Requirements and restrictions:
+
+- **required**: fields that MUST be present
+- **restricted**: fields that MUST NOT be present
+
+Boolean flags indicating support for specific Qe features:
+
+- **matchDot**: Can `match` on dot notation e.g. `cars.year`
+- **canPopulate**: Fully support populate
+- **canLimit**: Can restrict number of results returned
+- **canOffsetByNumber**: Can offset results by a number (skip)
+- **canOffsetById**: Can offset starting from an id (start-at)
+- **canSort**: Support sorting on a key
+- **canSubsort**: Support sub sorting on multiple keys
+- **canInclude**: Support sparse field whitelisting
+- **canExclude**: Support sparse field blacklisting
+
+Specific descriptions for custom fields:
+
+- **meta**:  An object hash `{$key:"$stringDesc"}` describing supported non-standard fields
+
+An example response:
+
+```js
+{
+  qeVersion: "0.6",
+  required: ["do", "on"],
+  restricted: ["populate"],
+  actions: ["create","find","update","remove"],
+  updateOps: ["pull","push","inc"],
+  matchOps: ["eq","neq","in","nin","lt","gt"],
+  canPopulate: false,
+  canLimit: true,
+  canOffsetByNumber: true,
+  canOffsetByMatch: true,
+  canInclude: true,
+  canExclude: true
+  meta: {
+    _authToken: "A String used for authentication"
+  }
+}
+```
+
 
 ## License
 
