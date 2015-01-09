@@ -1,5 +1,5 @@
 {
-  "name": "mekanika-qe",
+  "name": "query-envelope",
   "version": "0.6.0",
   "description": "Qe - Query envelope specification",
   "repository": {
@@ -9,11 +9,7 @@
   "bugs": {
     "url": "https://github.com/mekanika/qe/issues"
   },
-  "license": "LGPL-3.0+",
+  "license": "CC-BY-SA",
   "homepage": "https://github.com/mekanika/qe",
-  "main": "index.js",
-  "devDependencies": {
-    "mocha": "~1.21.4",
-    "chai": "~1.9.1"
-  }
+  "main": "README.md"
 }
