@@ -128,7 +128,7 @@ An empty list:
     [,,,,,,,,,,,] // no-op
     [,,,,,,,,,,,,] // ERROR - 13 fields. Invalid Qe.
 
-Empty fields are treated as being 'unset'.
+Empty, `undefined`, `null` and [falsey](http://james.padolsey.com/javascript/truthy-falsey/) fields **SHOULD** be treated as being 'unset'.
 
     ['find','jam',,,,,['title']]
 
