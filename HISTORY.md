@@ -1,3 +1,20 @@
+0.7.0 - 9 January 2015
+=====
+
+Changed:
+
+- Update license to CC-BY-SA (final license)
+- Relaxed requirement for additional fields in Qe to 'SHOULD'
+- "Falsey" values treated as unset
+
+Added:
+
+- Support for batch updates (multiple ids with multiple body elements)
+- Add error if .body and .update act on same field
+- Experimental 'Implementing Qe' adapter support clause
+
+
+
 0.6.0 - 7 November 2014
 =====
 
