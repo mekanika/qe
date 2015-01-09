@@ -15,14 +15,14 @@
 
 _Qe_ are resource oriented **control messages** for APIs.
 
-They do not _do_ anything - they are descriptions consumed by _Qe_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
+_Qe_ do not _do_ anything - they are descriptions consumed by _Qe_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
 
 Query envelopes _(Qe)_ seek to:
 
 - provide a _standardised_ description for arbitrary requests
-- abstract API 'calls' into discrete transform objects
-- act as _control messages_ for your _Qe_-aware API
-- describe the 'what', leaving the 'how' to you
+- act as _control messages_ for _Qe_-aware API
+- abstract API 'calls' into discrete state/transform objects
+- describe the "what", leaving the "how" to implementation
 
 An example _Qe_:
 
@@ -110,7 +110,7 @@ The simplest possible _Qe_ is an empty envelope (no-op).
 
 > Stability: 1 - **Experimental**
 >
-> The `query` library stores an **object hash** and can convert to an **ordered list** (currently recommended below). The adapter integration tests end up serialising against the object hash. More tests are required for real use cases.
+> The `Query` library stores an **object hash** and can convert to an **ordered list** (currently recommended below). The `Adapter` integration tests end up serialising against the object hash. More tests are required for real use cases.
 
 Query envelopes are significantly ordered lists of fields with a maximum length of 12. Each position is described by a field in the 'Structure' section of this document.
 
@@ -135,12 +135,12 @@ Trailing empty fields are **RECOMMENDED** to be omitted, however _Qe_ **MAY** pa
 
 ### Serialisation
 
-All examples in this document are shown as Javascript Primitives (object hashes _and_ _Qe_ arrays).
+All examples in this document are shown as Javascript primitives.
 
 _Qe_ **MAY** be serialised as JSON.
 
 
-## Field Details
+## Qe field details
 
 > **Important:** (a note about "index")
 >  The index number refers to the Javascript-style **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
@@ -187,7 +187,9 @@ Type: **String**
 
 The `.on` field points to a unique entity type to act upon, like a table (SQL), a collection (Document stores), a resource (REST). It is almost always a unique reference to some end-point that a `.do` field will apply to.
 
-Some actions might _not_ act `.on` anything, most do.
+_Qe_ **MAY** omit `.on`, as some actions might _not_ act `.on` anything. eg. `{do:'self_destruct', meta:{secret:'☃'}}`.
+
+Example `.on` usage:
 
 ```js
 // Object hash:
