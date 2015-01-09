@@ -24,6 +24,11 @@ Query envelopes _(Qe)_ seek to:
 - abstract API 'calls' into discrete state/transform objects
 - describe the "what", leaving the "how" to implementation
 
+Useful reference projects:
+
+  - **[Query](https://github.com/mekanika/query)** - library to **generate** valid _Qe_
+  - **[Adapter](https://github.com/mekanika/adapter)** - base class for **parsing and consuming** _Qe_.
+
 An example _Qe_:
 
 ```js
