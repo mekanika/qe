@@ -376,8 +376,6 @@ Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the 
 
 A Qe `.do` action **SHOULD** apply to each element in the `.body` array.
 
-_However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the data element to `.ids`
-
 ```js
 // Example create multiple 'guitars'
 // Object hash:
@@ -394,19 +392,50 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 ['create','guitars',,,[{label:'Fender Stratocaster', price:450.75},{label:'Parker Fly', price:399.00}]]
 ```
 
+### Multiple `.body` elements on **update**
+
+In general "update" actions **SHOULD** collapse multiple `.body` elements into a single element (to apply to all matching records/results).
+
+_However_: **batch updates** of discrete transforms per element are supported when the number of `.ids` matches the number of `.body` elements, and NO `.match` or `.update` field is set. Updates **SHOULD** pair the `.ids` with the corresponding index `.body` element:
+
 ```js
-// Example specifying `ids` field
+// Update 2 users: setting user `{id:1}` skill field and user `{id:2}` age field. 
+var qe = {
+  do: 'update',
+  on: 'users',
+  ids: [1, 2],
+  body: [ {skill:12}, {age:21} ]
+}
+```
+
+For **updates**,  when `.ids` AND `.body` is set, the following states apply:
+
+[field]  | One `.body` | Many `.body`
+:--|:--:|:--:
+`.match` | :white_check_mark: | :no_entry_sign: 
+`.update` | :white_check_mark: | :no_entry_sign: 
+One `.ids` | :white_check_mark: | :no_entry_sign: 
+Many `.ids` | :white_check_mark: | :large_blue_circle: equal num
+
+For "update" actions, many `.body` elements are ONLY permitted when:
+
+-  `.ids` field is set to the same number of elements as `.body`, 
+- AND the `.match` and `.update` fields are NOT SET.
+
+```js
+// Example specifying a match within `ids` field
 // (note ONLY one object in body)
 // Object hash:
 {
   do: 'update',
   on: 'guitars',
-  ids: ['12','35'],
+  ids: ['12','35','17','332'],
+  match: {and:[{price:{eq:260}}]},
   body: [{price: 250.00}]
 }
 
 // Qe:
-['update','guitars',['12','35'],,[{price:250.00}]]
+['update','guitars',['12','35','17','332'],{and:[{price:{eq:260}}]},[{price:250.00}]]
 ```
 
 
