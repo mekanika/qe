@@ -449,6 +449,8 @@ For "update" actions, many `.body` elements are ONLY permitted when:
 
 Type: **Array** of update objects
 
+The array of update objects **SHOULD** all be applied to every matching result (provided by `.ids` and/or `.match` conditions).
+
 Update object format:
 
 ```js
