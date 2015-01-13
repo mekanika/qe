@@ -15,7 +15,7 @@
 
 _Qe_ are resource oriented **control messages** for APIs.
 
-_Qe_ do not _do_ anything - they are descriptions consumed by _Qe_-aware APIs to instruct actions, using a _verbs_ (actions) acting on _nouns_ (resources) approach.
+They are descriptions consumed by _Qe_-aware APIs to instruct actions, generally using a _verbs_ (actions) acting on _nouns_ (resources) approach.
 
 Query envelopes _(Qe)_ seek to:
 
@@ -56,6 +56,19 @@ to their balance, and return only their ids. */
     {credits: {'inc':25}}
   ],
   select: [ 'id' ]
+}
+```
+
+For endpoints that predefine their actions and/or targets (`.on`), _Qe_ may simply encode relevant data, for example:
+
+```js
+{
+  match: {
+    or: [
+      {age: {gt:10}},
+      {variety: {eq:'Pinot Noir'}}
+    ]
+  }
 }
 ```
 
