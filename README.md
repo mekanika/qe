@@ -565,7 +565,7 @@ Populate objects **MUST** be unique by `$field`. For example:
 {
   populate: {
     'posts':{},
-    'tags': {query:{resource:'Tgz'}}
+    'tags': {query:{on:'Tgz'}}
   }
 }
 ```
