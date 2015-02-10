@@ -309,9 +309,10 @@ The current reserved match operators are:
 
 - **eq** - Equals
 - **neq** - Not equals
-- **in** - In, or, contains (array)
-- **nin** - Not in, or, does not contain (array)
-- **all** - has all the values (array)
+- **in** - (array) Scalar value is in this list
+- **nin** - (array) Scalar must not be in this list
+- **all** - (array) All items in list must be present in the value array
+- **any** - (array) Value array has at least one of the items in list
 - **lt** - Less than `<`
 - **lte** - Less than or equal to `<=`
 - **gt** - Greater than `>`
