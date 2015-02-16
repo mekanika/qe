@@ -36,10 +36,6 @@ An example _Qe_:
 or more followers to 'platinum' status, add 25 credits
 to their balance, and return only their ids. */
 
-// Qe - ordered list in JSON:
-["update","users",null,{"and":[{"followers":{"gte":100}},{"state":{"nin":["CA"]}}]},[{"status":"platinum"}],[{"credits":{"inc":25}}],["id"]]
-
-// And exploded in an object hash format:
 {
   do: 'update',
   on: 'users',
@@ -82,11 +78,9 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 > Stability: 3 - **Stable**
 >
-> Active questions regarding **encoding** (either as object hash, ordered list or sparse object. [Discussion ongoing.](https://github.com/mekanika/qe/issues/5)
->
-> _Key point_: The **structure** and order of _Qe_ is looking solid. Has been decently implemented in [`query`](https://github.com/mekanika/query/) and is undergoing integration tests against the Fixture adapter.
+> The structure and order of _Qe_ is looking solid. Has been decently implemented in [`query`](https://github.com/mekanika/query/) and has been undergoing extensive testing against the reference Fixture adapter. **Release Candidate**
 
-The structure of a Query envelope is described below, according to:
+The structure of a Query envelope is **significantly ordered** and otherwise described by its _fields_ below, according to:
 
 `position`: **field** - _type_ description
 
@@ -124,38 +118,12 @@ A _Qe_ **SHOULD NOT** have any other fields.
 
 The simplest possible _Qe_ is an empty envelope (no-op).
 
-### Encoding
-
-> Stability: 1 - **Experimental**
->
-> The `Query` library stores an **object hash** and can convert to an **ordered list** (currently recommended below). The `Adapter` integration tests end up serialising against the object hash. More tests are required for real use cases.
-
-Query envelopes are significantly ordered lists of fields with a maximum length of 12. Each position is described by a field in the 'Structure' section of this document.
-
-_Qe_ in this spec are explained by being shown in a deserialised 'object hash' format for ease of comprehension. Object hashes _ARE NOT_ Query envelopes, but may be collapsed to _Qe_.
-
-An empty list:
-
-    [] // no-op
-    [,,,,] // no-op
-    [,,,,,,,,,,,] // no-op
-    [,,,,,,,,,,,,] // ERROR - 13 fields. Invalid Qe.
-
-Empty, `undefined`, `null` and [falsey](http://james.padolsey.com/javascript/truthy-falsey/) fields **SHOULD** be treated as being 'unset'.
-
-    ['find','jam',,,,,['title']]
-
-Trailing empty fields are **RECOMMENDED** to be omitted, however _Qe_ **MAY** pass all fields (even if empty):
-
-    ['find','jam',,,,,['title'],,,,,]
-
-
 
 ### Serialisation
 
 All examples in this document are shown as Javascript primitives.
 
-_Qe_ **MAY** be serialised as JSON.
+_Qe_ **MAY** be serialised as JSON, or any other appropriate structure.
 
 
 ## Qe field details
@@ -164,7 +132,7 @@ _Qe_ **MAY** be serialised as JSON.
 >  The index number refers to the Javascript-style **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
 
 
-### index: **`0`** - ".do"
+### **.do** - index: **`0`**
 
 > Stability:  4 - **Final**
 
@@ -173,15 +141,12 @@ Type: **String**
 The `do` field is a _verb_ that describes the intended process to invoke.
 
 ```js
-// Object hash:
+// Create a tag {label:sweet}
 {
   do: 'create',
   on: 'tags',
   body: [ {label:'sweet'} ]
 }
-
-// Qe:
-['create','tags',,,[{label:'sweet'}]]
 ```
 
 The following are reserved action types. An API consuming _Qe_ **SHOULD** handle these defaults:
@@ -197,7 +162,7 @@ Qe **MAY** specify other (custom) action types.
 
 
 
-### index:**`1`** - ".on"
+### **.on** - index:**`1`**
 
 > Stability:  4 - **Final**
 
@@ -210,20 +175,17 @@ _Qe_ **MAY** omit `.on`, as some actions might _not_ act `.on` anything. eg. `{d
 Example `.on` usage:
 
 ```js
-// Object hash:
+// Get 25 tweets
 {
   do: 'find',
   on: 'tweets',
   limit: 25
 }
-
-// Qe:
-['find','tweets',,,,,,,25]
 ```
 
 
 
-### index: **`2`** - ".ids"
+### **.ids** - index: **`2`**
 
 > Stability:  3 - **Stable**
 
@@ -236,25 +198,24 @@ If `.ids` are provided, `.match` conditions **MUST** apply only to that subset o
 Example `.ids` usage:
 
 ```js
-// Object hash:
+// Remove ids ['554120', '841042']
 {
   do: 'remove',
   ids: ['554120', '841042']
 }
-
-// Qe:
-['remove',,['554120','841042']]
 ```
 
 
 
-### index: **`3`** - ".match"
+### **.match** - index: **`3`**
 
 > Stability:  2 - **Unstable**
 
 Type: match container **Object**
 
 `.match` is used to conditionally specify entities that meet matching criteria. If `.ids` are provided, `.match` **MUST** apply only to that subset of ids.
+
+"Match" borrows its structure from MongoDB.
 
 A match _container_ object (`mc`) is defined as:
 
@@ -286,7 +247,6 @@ Example:
 
 ```js
 // Match people in CA and NY over 21 or anyone in WA
-// Object hash:
 {
   match: {
     'or': [
@@ -298,9 +258,6 @@ Example:
     ]
   }
 }
-
-// Qe:
-[,,,{'or':[{'and':[{age:{gt:21}},{state: {in:['CA', 'NY']}}]},{state: {eq:'WA'}}]}]
 ```
 
 #### match operators
@@ -344,7 +301,6 @@ Qe **MAY** specify alternative custom operators, eg:
 // Match users who:
 //  - have address.state in 'CA'
 //  - and a car in the array of `cars` < 1970
-// Object hash:
 {
   do: 'find',
   on: 'users',
@@ -355,9 +311,6 @@ Qe **MAY** specify alternative custom operators, eg:
     ]
   }
 }
-
-// Qe:
-['find','users',,{or:[{'address.state':{in:['CA']}},{ 'cars.year':{lt:1970}}]}]
 ```
 
 Where a field specifying a sub-property match is typed as an Array (eg. the User's `cars` field above), the match **SHOULD** apply to all elements in the Array. e.g each car is checked if its `.year` property is `< 1970`.
@@ -365,7 +318,7 @@ Where a field specifying a sub-property match is typed as an Array (eg. the User
 
 
 
-### index: **`4`** - ".body"
+### **.body** - index: **`4`**
 
 > Stability:  3 - **Stable**
 
@@ -396,7 +349,6 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 
 ```js
 // Example create multiple 'guitars'
-// Object hash:
 {
   do: 'create',
   on: 'guitars',
@@ -405,16 +357,12 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
     {label:'Parker Fly', price:399.00}
   ]
 }
-
-// Qe:
-['create','guitars',,,[{label:'Fender Stratocaster', price:450.75},{label:'Parker Fly', price:399.00}]]
 ```
 
 
 ```js
 // Example specifying a match within `ids` field
 // (note ONLY one object in body)
-// Object hash:
 {
   do: 'update',
   on: 'guitars',
@@ -422,14 +370,11 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
   match: {and:[{price:{eq:260}}]},
   body: [{price: 250.00}]
 }
-
-// Qe:
-['update','guitars',['12','35','17','332'],{and:[{price:{eq:260}}]},[{price:250.00}]]
 ```
 
 
 
-### index: **`5`** - ".update"
+### **.update** - index: **`5`**
 
 > Stability:  2 - **Unstable**
 >
@@ -462,7 +407,6 @@ An example query with an `.update` field:
 
 ```js
 // Clearly describes an append/"add to" operation
-// Object hash
 {
   do:'update',
   on:'users',
@@ -471,9 +415,6 @@ An example query with an `.update` field:
     { comments: {push:['13','21']} }
   ]
 }
-
-// Qe:
-['update','users',['123'],,,[{comments: {push:['13','21']}}]]
 
 // In HTTP parlance:
 // PATCH /users/123
@@ -523,7 +464,7 @@ Qe **MAY** specify other update operators (that **SHOULD** be non-idempotent ope
 
 
 
-### index: **`6`** -  ".select"
+### **.select** - index: **`6`**
 
 > Stability:  3 - **Stable**
 
@@ -540,20 +481,17 @@ If no `.select` is present, all fields **SHOULD** be returned.
 
 
 ```js
-// Object hash:
+// Get artists, leave off 'name','bio'
 {
   do: 'find',
   on: 'artists',
   select: [ '-name', '-bio' ]
 }
-
-// Qe:
-['find','artists',,,,,,['-name','-bio']]
 ```
 
 
 
-### index: **`7`** - ".populate"
+### **.populate** index: **`7`**
 
 > Stability: 2 - **Unstable**
 
@@ -599,7 +537,6 @@ Example _Qe_ with populate:
 // Populate 'entries' field with no more than 5 posts
 // with higher 3 rating, exclude `post.comments`, and
 // sub-populate the `post.sites` field
-// Object hash:
 {
   do: 'find',
   on: 'users',
@@ -617,9 +554,6 @@ Example _Qe_ with populate:
     }
   }
 }
-
-// Qe:
-["find","users",,,,,,{entries:{query:{on:"posts",match:{or:[{rating:{gt:3}}]},select:["-comments"],limit:5,populate:{sites:{}}}}}]
 ```
 
 
@@ -636,16 +570,13 @@ Maximum number of results to return.
 Assume **no** limit if none specified. Qe services **MAY** restrict results anyway.
 
 ```js
-// Object hash:
+// Limit 25. Such limit.
 { limit: 25 }
-
-// Qe:
-[,,,,,,,,25]
 ```
 
 
 
-### index: **`9`** - ".offset"
+### **.offset** - index: **`9`**
 
 > Stability:  2 - **Unstable**
 
@@ -670,18 +601,13 @@ Assume **no** offset if none present.
 {offset:1}
 // -> ['b','c']
 
-// Qe:
-['find',,,,,,,,,1]
-
 // As 'startAt' style:
 {offset: {id: {eq:'1234'}}}
-// Qe:
-[,,,,,,,,,{id:{eq:'1234'}}]
 ```
 
 
 
-### index: **`10`** - ".sort"
+### **.sort** - index: **`10`**
 
 > Stability:  2 - **Unstable**
 
@@ -710,14 +636,11 @@ Sub sorting is provided by adding parameters to order against. These parameters 
     "-age", "name"
   ]
 }
-
-// Qe:
-[,,,,,,,,,,["-age","name"]]
 ```
 
 
 
-### index: **`11`** - ".meta"
+### **.meta** - index: **`11`**
 
 > Stability: 1 - **Experimental**
 
@@ -736,9 +659,6 @@ Meta data store acts as a catch-all for context specific meta information that m
     _authToken: 'xyzqwerty098'
   }
 }
-
-// Qe:
-['update','guitars',['11523'],,[],,,,,,,{_authToken:'xyzqwerty098'}]
 ```
 
 
