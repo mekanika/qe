@@ -1,3 +1,21 @@
+0.8.0 - 23 March 2015
+=====
+
+Removed: 
+
+- MAJOR: "List" style encoding is now ONLY significantly ordered keyed hashes
+
+Added:
+
+- `any` match operator
+- `unset` update operator
+
+Changed:
+
+- `.meta` stability flag and description
+
+
+
 0.7.0 - 9 January 2015
 =====
 
