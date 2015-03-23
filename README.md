@@ -647,11 +647,11 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 ### **.meta** - index: **`11`**
 
-> Stability: 1 - **Experimental**
+> Stability: 3 - **Stable**
 
 Type: **Object** of arbitrary data
 
-Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Think of it like a 'Header' block in an HTTP request. **MAY** contain arbitrary data.
+Meta data store acts as a catch-all for context specific meta information that may need to be attached to a query object message. Can be used similarly to the 'Header' block in an HTTP request or as the 'store' on a request that propagates through a system. **MAY** contain arbitrary data.
 
 ```js
 // Object hash:
