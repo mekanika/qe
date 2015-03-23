@@ -339,7 +339,7 @@ Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the 
 }
 ```
 
-> Qe implementations **MAY** treat element fields set to `undefined` as an 'UNSET' command for schema-less stores.
+> Qe implementations **MAY** treat element fields set to `undefined` as an 'UNSET' command for schema-less stores. Otherwise specify an `.update` action with an `unset` operator.
 
 A Qe `.do` action **SHOULD** apply to each element in the `.body` array.
 
@@ -451,6 +451,11 @@ Reserved update operators are:
 - **pull**: array/list operator that removes the `value` from the field.
 ```js
 {comment_ids: {pull:['3','17']}}
+```
+
+- **unset**: remove a field entirely from the target
+```js
+{comments: {unset:true}}
 ```
 
 These operators **SHOULD NOT** be aliased or have their intended meaning altered.
@@ -717,7 +722,7 @@ An example response:
   required: ["do", "on"],
   restricted: ["populate"],
   actions: ["create","find","update","remove"],
-  updateOps: ["pull","push","inc"],
+  updateOps: ["pull","push","inc","unset"],
   matchOps: ["eq","neq","in","nin","lt","gt"],
   canPopulate: false,
   canLimit: true,
