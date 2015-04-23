@@ -6,10 +6,10 @@
 >
 > Each section (and some subsections) are marked with a _Stability_ code explained below:
 >
-> - 1 - **Experimental**: Recently introduced. Likely to change or be removed.
-> - 2 - **Unstable**: Settling but not stable. May change or be removed.
-> - 3 - **Stable**: Tested and stable. Only minor changes if any.
-> - 4 - **Final**: Unlikely to ever change.
+> - ![Experimental](https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square) Recently introduced. Likely to change or be removed.
+> - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) Settling but not stable. May change or be removed.
+> - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) Tested and stable. Only minor changes if any.
+> - ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) Spec ready and unlikely to ever change.
 
 ---
 
@@ -74,10 +74,8 @@ For endpoints that predefine their actions and/or targets (`.on`), _Qe_ may simp
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
 
 
-## Structure
+## Structure ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
-> Stability: 3 - **Stable**
->
 > The structure and order of _Qe_ is looking solid. Has been decently implemented in [`query`](https://github.com/mekanika/query/) and has been undergoing extensive testing against the reference Fixture adapter. **Release Candidate**
 
 The structure of a Query envelope is **significantly ordered** and otherwise described by its _fields_ below, according to:
@@ -86,33 +84,33 @@ The structure of a Query envelope is **significantly ordered** and otherwise des
 
 The core action "do _verb_ on _noun_" block:
 
-  - `0`: **do** - _String_ `create`, `find`, `update`, `remove`
-  - `1`: **on** - _String_ resource target
+  - `0`: **do** - ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ `create`, `find`, `update`, `remove`
+  - `1`: **on** - ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ resource target
 
 Matching resources:
 
-  - `2`: **ids** - _Array_ of String or Number `ids`
-  - `3`: **match** - _Object_ match container of match object conditions
+  - `2`: **ids** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String or Number `ids`
+  -  `3`: **match** -  ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Object_ match container of match object conditions
 
 Data block:
 
-  - `4`: **body** - _Array_ of data elements
-  - `5`: **update** - _Array_ of update objects
+  - `4`: **body** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of data elements
+  - `5`: **update** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of update objects
 
 Return controls:
 
-  - `6`: **select** - _Array_ of String fields to return or exclude
-  - `7`: **populate** - _Array_ of populate objects
+  - `6`: **select** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String fields to return or exclude
+  - `7`: **populate** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of populate objects
 
 Results display:
 
-  - `8`: **limit** - _Number_ of results to return
-  - `9`: **offset** - _Number_ OR match _Object_ index to start results
-  - `10`: **sort** - _Array_ of String keys to sort against
+  - `8`: **limit** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Number_ of results to return
+  - `9`: **offset** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Number_ OR match _Object_ index to start results
+  - `10`: **sort** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of String keys to sort against
 
 And custom data:
 
-  - `11`: **meta** - _Object_ : arbitrary data hash
+  - `11`: **meta** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Object_ : arbitrary data hash
 
 A _Qe_ **SHOULD NOT** have any other fields.
 
@@ -132,9 +130,7 @@ _Qe_ **MAY** be serialised as JSON, or any other appropriate structure.
 >  The index number refers to the Javascript-style **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
 
 
-### **.do** - index: **`0`**
-
-> Stability:  4 - **Final**
+### **.do** - index: **`0`** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
 
 Type: **String**
 
@@ -162,9 +158,7 @@ Qe **MAY** specify other (custom) action types.
 
 
 
-### **.on** - index:**`1`**
-
-> Stability:  4 - **Final**
+### **.on** - index:**`1`** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
 
 Type: **String**
 
@@ -185,9 +179,7 @@ Example `.on` usage:
 
 
 
-### **.ids** - index: **`2`**
-
-> Stability:  3 - **Stable**
+### **.ids** - index: **`2`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of strings or numbers
 
@@ -207,9 +199,7 @@ Example `.ids` usage:
 
 
 
-### **.match** - index: **`3`**
-
-> Stability:  2 - **Unstable**
+### **.match** - index: **`3`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: match container **Object**
 
@@ -260,7 +250,7 @@ Example:
 }
 ```
 
-#### match operators
+#### match operators ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 The current reserved match operators are:
 
@@ -289,10 +279,8 @@ Qe **MAY** specify alternative custom operators, eg:
 ]}
 ```
 
-#### Deep matches
+#### Deep matches ![Experimental](https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square)
 
-> Stability:  1 - **Experimental**
->
 > **TODO**: Requires testing in real world use cases
 
 `$field` **MAY** present a dot notation property (eg. `dob.year`) to match on _complex properties_. In this case the match **SHOULD** apply to the sub-property. For example:
@@ -318,15 +306,13 @@ Where a field specifying a sub-property match is typed as an Array (eg. the User
 
 
 
-### **.body** - index: **`4`**
-
-> Stability:  3 - **Stable**
+### **.body** - index: **`4`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of data elements
 
 `.body`is an array containing one or more elements (usually Objects of arbitrary structure). `.body` **MUST always** be an Array, even when your data payload is only one object.
 
-Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the keys supplied. 
+Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the keys supplied.
 
 ```js
 // Example update all guitars:
@@ -343,9 +329,9 @@ Elements in `.body` **SHOULD** be treated as sparse objects, and only apply the 
 
 A Qe `.do` action **SHOULD** apply to each element in the `.body` array.
 
-_However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the body element to matching `.ids`. 
+_However_, when specifying `.ids` or other `.match` constraints, the `.body` field **MUST** be empty or contain _only one_ element, and the action **SHOULD** apply the body element to matching `.ids`.
 
-> Note: To perform discrete data transforms (ie. different/conditional changes on differing records), use a dedicated control message (Qe) per transform. 
+> Note: To perform discrete data transforms (ie. different/conditional changes on differing records), use a dedicated control message (Qe) per transform.
 
 ```js
 // Example create multiple 'guitars'
@@ -374,10 +360,8 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 
 
 
-### **.update** - index: **`5`**
+### **.update** - index: **`5`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
-> Stability:  2 - **Unstable**
->
 > Do updates need to support 'deep updates' eg:
 > `{"users.cars.reviews":{push::"Great!"}}`
 
@@ -432,11 +416,11 @@ An example query with an `.update` field:
 //   });
 ```
 
-> Note: If `.body` is provided and is modifying _the same_ key on a record as the `.update` field, there exists sufficient knowledge to **collapse** the non-idempotent update into the idempotent write (ie. combine the update for that key into the `.body` field). 
-> 
+> Note: If `.body` is provided and is modifying _the same_ key on a record as the `.update` field, there exists sufficient knowledge to **collapse** the non-idempotent update into the idempotent write (ie. combine the update for that key into the `.body` field).
+>
 > As such if both `.update` and `.body` are acting on the same record field, the Qe **SHOULD** return an error.
 
-Reserved update operators are:
+Reserved update operators are: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 - **inc** : modify a scalar Number `field` by the `value` (+ve or -ve).
 ```js
@@ -469,9 +453,7 @@ Qe **MAY** specify other update operators (that **SHOULD** be non-idempotent ope
 
 
 
-### **.select** - index: **`6`**
-
-> Stability:  3 - **Stable**
+### **.select** - index: **`6`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of strings
 
@@ -496,9 +478,7 @@ If no `.select` is present, all fields **SHOULD** be returned.
 
 
 
-### **.populate** index: **`7`**
-
-> Stability: 2 - **Unstable**
+### **.populate** index: **`7`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Object** - a hash of keys populate objects
 
@@ -564,9 +544,7 @@ Example _Qe_ with populate:
 
 
 
-### index: **`8`** - ".limit"
-
-> Stability:  3 - **Stable**
+### **.limit** - index: **`8`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Number**
 
@@ -581,9 +559,7 @@ Assume **no** limit if none specified. Qe services **MAY** restrict results anyw
 
 
 
-### **.offset** - index: **`9`**
-
-> Stability:  2 - **Unstable**
+### **.offset** - index: **`9`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Number** or match object **Object**
 
@@ -612,9 +588,7 @@ Assume **no** offset if none present.
 
 
 
-### **.sort** - index: **`10`**
-
-> Stability:  2 - **Unstable**
+### **.sort** - index: **`10`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Array** of strings
 
@@ -645,9 +619,7 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 
 
-### **.meta** - index: **`11`**
-
-> Stability: 3 - **Stable**
+### **.meta** - index: **`11`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Object** of arbitrary data
 
@@ -669,13 +641,13 @@ Meta data store acts as a catch-all for context specific meta information that m
 
 ## Implementing Qe: **adapters**
 
-> Stability: 1 - **Experimental**
->
+![Experimental](https://img.shields.io/badge/stability-experimental-orange.svg?style=flat-square)
+
 > - `canX` flags vs. `enabled = ["$feature1", ...]`
 >
 > The currently proposed granularity is ugly because features often have sub-capabilities (eg. `limit: [byNumber, byMatch]`  and `match` having multiple operators and "deepMatch" etc.)
 
-Qe consuming interfaces are referred to as **Adapters**. 
+Qe consuming interfaces are referred to as **Adapters**.
 
 > See the **[Qe Adapter](https://github.com/mekanika/adapter)** repo for a base implementation of this specification.
 
@@ -739,7 +711,7 @@ An example response:
 
 ## License
 
-> Stability: 4 - **Final**
+![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
 
 Maintained and released by [Mekanika](http://mekanika.org)
 
