@@ -76,41 +76,39 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ## Structure ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
-> The structure and order of _Qe_ is looking solid. Has been decently implemented in [`query`](https://github.com/mekanika/query/) and has been undergoing extensive testing against the reference Fixture adapter. **Release Candidate**
+The structure of a Query envelope is described by its _fields_ below, according to:
 
-The structure of a Query envelope is **significantly ordered** and otherwise described by its _fields_ below, according to:
-
-`position`: **field** - _type_ description
+**field**: ![Stability](https://img.shields.io/badge/stability-level-lightgrey.svg?style=flat-square) _type_ description
 
 The core action "do _verb_ on _noun_" block:
 
-  - `0`: **do** - ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ `create`, `find`, `update`, `remove`
-  - `1`: **on** - ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ resource target
+  - **do**: ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ `create`, `find`, `update`, `remove`
+  - **on**: ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square) _String_ resource target
 
 Matching resources:
 
-  - `2`: **ids** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String or Number `ids`
-  -  `3`: **match** -  ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Object_ match container of match object conditions
+  - **ids**: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String or Number `ids`
+  -  **match**:  ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Object_ match container of match object conditions
 
 Data block:
 
-  - `4`: **body** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of data elements
-  - `5`: **update** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of update objects
+  - **body**: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of data elements
+  - **update**: ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of update objects
 
 Return controls:
 
-  - `6`: **select** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String fields to return or exclude
-  - `7`: **populate** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of populate objects
+  - **select**: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Array_ of String fields to return or exclude
+  - **populate**: ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of populate objects
 
 Results display:
 
-  - `8`: **limit** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Number_ of results to return
-  - `9`: **offset** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Number_ OR match _Object_ index to start results
-  - `10`: **sort** - ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of String keys to sort against
+  - **limit**: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Number_ of results to return
+  - **offset**: ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Number_ OR match _Object_ index to start results
+  - **sort**: ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square) _Array_ of String keys to sort against
 
 And custom data:
 
-  - `11`: **meta** - ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Object_ : arbitrary data hash
+  - **meta**: ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square) _Object_ : arbitrary data hash
 
 A _Qe_ **SHOULD NOT** have any other fields.
 
@@ -126,11 +124,7 @@ _Qe_ **MAY** be serialised as JSON, or any other appropriate structure.
 
 ## Qe field details
 
-> **Important:** (a note about "index")
->  The index number refers to the Javascript-style **array index**. `0` is thus the _first_ element, `3` is the _fourth_ etc. Index `5` DOES NOT mean the fifth element, it refers to the element at **index** `5` (which, of course, is the _sixth_ element).
-
-
-### **.do** - index: **`0`** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
+### **.do** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
 
 Type: **String**
 
@@ -158,7 +152,7 @@ Qe **MAY** specify other (custom) action types.
 
 
 
-### **.on** - index:**`1`** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
+### **.on** ![Final](https://img.shields.io/badge/stability-final-blue.svg?style=flat-square)
 
 Type: **String**
 
@@ -179,7 +173,7 @@ Example `.on` usage:
 
 
 
-### **.ids** - index: **`2`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
+### **.ids** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of strings or numbers
 
@@ -199,7 +193,7 @@ Example `.ids` usage:
 
 
 
-### **.match** - index: **`3`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
+### **.match** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: match container **Object**
 
@@ -306,7 +300,7 @@ Where a field specifying a sub-property match is typed as an Array (eg. the User
 
 
 
-### **.body** - index: **`4`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
+### **.body** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of data elements
 
@@ -360,7 +354,7 @@ _However_, when specifying `.ids` or other `.match` constraints, the `.body` fie
 
 
 
-### **.update** - index: **`5`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
+### **.update** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 > Do updates need to support 'deep updates' eg:
 > `{"users.cars.reviews":{push::"Great!"}}`
@@ -453,7 +447,7 @@ Qe **MAY** specify other update operators (that **SHOULD** be non-idempotent ope
 
 
 
-### **.select** - index: **`6`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
+### **.select** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Array** of strings
 
@@ -478,7 +472,7 @@ If no `.select` is present, all fields **SHOULD** be returned.
 
 
 
-### **.populate** index: **`7`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
+### **.populate** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Object** - a hash of keys populate objects
 
@@ -544,7 +538,7 @@ Example _Qe_ with populate:
 
 
 
-### **.limit** - index: **`8`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
+### **.limit** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Number**
 
@@ -559,7 +553,7 @@ Assume **no** limit if none specified. Qe services **MAY** restrict results anyw
 
 
 
-### **.offset** - index: **`9`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
+### **.offset** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Number** or match object **Object**
 
@@ -588,7 +582,7 @@ Assume **no** offset if none present.
 
 
 
-### **.sort** - index: **`10`** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
+### **.sort** ![Unstable](https://img.shields.io/badge/stability-unstable-yellow.svg?style=flat-square)
 
 Type: **Array** of strings
 
@@ -619,7 +613,7 @@ Sub sorting is provided by adding parameters to order against. These parameters 
 
 
 
-### **.meta** - index: **`11`** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
+### **.meta** ![Stable](https://img.shields.io/badge/stability-stable-green.svg?style=flat-square)
 
 Type: **Object** of arbitrary data
 
