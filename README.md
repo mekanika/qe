@@ -119,7 +119,22 @@ The simplest possible _Qe_ is an empty envelope (no-op).
 
 All examples in this document are shown as Javascript primitives.
 
-_Qe_ **MAY** be serialised as JSON, or any other appropriate structure.
+_Qe_ **MAY** be serialised as JSON, or any other appropriate structure (eg. YAML):
+
+```yaml
+# Update user @moomoo `friends` number and return only `{id, fullname}` fields
+---
+do: update
+on: users
+ids:
+  - @moomoo
+body:
+  -
+    friends: 25
+select:
+  - id
+  - fullname
+```
 
 
 ## Qe field details
